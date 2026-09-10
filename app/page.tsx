@@ -152,7 +152,7 @@ export default function HomePage() {
             <div>
               <div className="relative mx-auto aspect-[4/5] max-w-sm overflow-hidden border border-[#1f1f1f] bg-[#0a0a0a] lg:mx-0">
                 <Image
-                  src="/about/profile.png"
+                  src="/about/profile.jpeg"
                   alt="Andriamahandry Hasiniavo"
                   fill
                   className="object-cover grayscale transition-all duration-700 hover:grayscale-0"
