@@ -12,7 +12,7 @@ const projects = [
     description:
       "Une plateforme pensée pour aider les restaurateurs à améliorer leur présence digitale, optimiser leurs menus et développer leur activité.",
     technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Prisma"],
-    image: "/projects/lumi.jpg",
+    image: "/projects/lumi/hero.png",
     href: "/projects/lumi",
     featured: true,
   },
@@ -141,6 +141,86 @@ export default function HomePage() {
       </Section>
 
       {/* =====================================================
+          ABOUT
+      ===================================================== */}
+
+      <section className="border-y border-[#1f1f1f]">
+        <Container>
+          <div className="grid gap-14 py-24 sm:py-32 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-24">
+
+            {/* PHOTO */}
+            <div>
+              <div className="relative mx-auto aspect-[4/5] max-w-sm overflow-hidden border border-[#1f1f1f] bg-[#0a0a0a] lg:mx-0">
+                <Image
+                  src="/about/profile.png"
+                  alt="Andriamahandry Hasiniavo"
+                  fill
+                  className="object-cover grayscale transition-all duration-700 hover:grayscale-0"
+                  sizes="(max-width: 1024px) 100vw, 400px"
+                />
+
+                <div className="absolute inset-0 border border-white/5" />
+
+                <div className="absolute bottom-5 left-5">
+                  <span className="rounded-full border border-white/15 bg-black/60 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-white/70 backdrop-blur-md">
+                    Développeur · Créateur digital
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* BIO */}
+            <div>
+              <div className="flex items-center gap-4">
+                <span className="h-px w-8 bg-[#d00018]" />
+
+                <p className="text-xs font-medium uppercase tracking-[0.25em] text-neutral-500">
+                  À propos de moi
+                </p>
+              </div>
+
+              <h2 className="mt-7 text-balance text-3xl font-medium leading-tight tracking-[-0.04em] sm:text-4xl lg:text-5xl">
+                Je transforme des idées en
+                <span className="text-neutral-500">
+                  {" "}
+                  expériences digitales.
+                </span>
+              </h2>
+
+              <div className="mt-8 max-w-2xl space-y-5 text-base leading-8 text-neutral-500">
+                <p>
+                  Je suis Andriamahandry Hasiniavo, créateur digital et
+                  développeur web. Je conçois des interfaces et des produits
+                  digitaux avec une approche centrée sur l'utilisateur,
+                  la simplicité et la performance.
+                </p>
+
+                <p>
+                  J'aime transformer des problématiques concrètes en
+                  solutions digitales élégantes, utiles et capables
+                  d'évoluer dans le temps.
+                </p>
+              </div>
+
+              <div className="mt-10">
+                <Link
+                  href="/about"
+                  className="group inline-flex items-center gap-3 text-sm font-medium text-white transition-colors duration-300 hover:text-[#d00018]"
+                >
+                  <span>En savoir plus sur moi</span>
+
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </Link>
+              </div>
+            </div>
+
+          </div>
+        </Container>
+      </section>
+
+      {/* =====================================================
           PROJECTS
       ===================================================== */}
 
@@ -193,43 +273,35 @@ export default function HomePage() {
                 {/* Image */}
 
                 <div className="relative aspect-[16/9] overflow-hidden border border-[#1f1f1f] bg-[#0a0a0a]">
-                  {/* Placeholder until the real image exists */}
+                  <Image
+                    src={projects[0].image}
+                    alt="Aperçu du projet LUMI"
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    sizes="(max-width: 1024px) 100vw, 1280px"
+                  />
 
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <span className="text-[clamp(4rem,12vw,10rem)] font-semibold tracking-[-0.08em] text-white/[0.035]">
-                        LUMI
-                      </span>
-
-                      <p className="mt-2 text-xs uppercase tracking-[0.3em] text-neutral-700">
-                        Aperçu du projet
-                      </p>
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-black/0" />
 
                   {/* Red accent */}
-
                   <div className="absolute left-0 top-0 h-full w-px origin-top scale-y-0 bg-[#d00018] transition-transform duration-700 group-hover:scale-y-100" />
 
                   {/* Project number */}
-
                   <div className="absolute left-6 top-6 sm:left-8 sm:top-8">
-                    <span className="text-xs font-medium text-neutral-600">
+                    <span className="text-xs font-medium text-white/60">
                       {projects[0].number}
                     </span>
                   </div>
 
                   {/* Category */}
-
                   <div className="absolute right-6 top-6 sm:right-8 sm:top-8">
-                    <span className="rounded-full border border-[#292929] bg-black/50 px-4 py-2 text-[10px] uppercase tracking-[0.18em] text-neutral-400 backdrop-blur-md">
+                    <span className="rounded-full border border-white/20 bg-black/50 px-4 py-2 text-[10px] uppercase tracking-[0.18em] text-white/70 backdrop-blur-md">
                       {projects[0].category}
                     </span>
                   </div>
 
                   {/* Hover arrow */}
-
-                  <div className="absolute bottom-6 right-6 flex h-12 w-12 translate-y-3 items-center justify-center rounded-full border border-[#333] bg-black/60 text-white opacity-0 backdrop-blur-md transition-all duration-500 group-hover:translate-y-0 group-hover:border-[#d00018] group-hover:opacity-100 sm:bottom-8 sm:right-8">
+                  <div className="absolute bottom-6 right-6 flex h-12 w-12 translate-y-3 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white opacity-0 backdrop-blur-md transition-all duration-500 group-hover:translate-y-0 group-hover:border-[#d00018] group-hover:opacity-100 sm:bottom-8 sm:right-8">
                     ↗
                   </div>
                 </div>
