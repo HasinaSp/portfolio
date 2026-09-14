@@ -150,12 +150,12 @@ export default function HomePage() {
 
             {/* PHOTO */}
             <div>
-              <div className="relative mx-auto aspect-[4/5] max-w-sm overflow-hidden border border-[#1f1f1f] bg-[#0a0a0a] lg:mx-0">
+              <div className="relative mx-auto aspect-[4/5] max-w-sm overflow-hidden border border-[#1f1f1f] bg-[#0a0a0a] lg:mx-0 rounded-md">
                 <Image
                   src="/about/profile.jpeg"
                   alt="Andriamahandry Hasiniavo"
                   fill
-                  className="object-cover grayscale transition-all duration-700 hover:grayscale-0"
+                  className="object-cover transition-transform duration-700 hover:scale-[1.03]"
                   sizes="(max-width: 1024px) 100vw, 400px"
                 />
 

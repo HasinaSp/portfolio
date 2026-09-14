@@ -1,9 +1,37 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import Button from "@/components/ui/Button";
+
+export const metadata: Metadata = {
+  title: "LUMI — Micro-SaaS pour restaurateurs",
+
+  description:
+    "Étude de cas de LUMI, un micro-SaaS conçu pour aider les restaurateurs à améliorer leur visibilité et leurs performances digitales.",
+
+  alternates: {
+    canonical: "/projects/lumi",
+  },
+
+  openGraph: {
+    title: "LUMI — Micro-SaaS pour restaurateurs",
+    description:
+      "Découvrez la conception, l'expérience et l'architecture du projet LUMI.",
+    url: "/projects/lumi",
+    type: "article",
+    images: [
+      {
+        url: "/projects/lumi/hero.png",
+        width: 1600,
+        height: 900,
+        alt: "LUMI — Micro-SaaS pour restaurateurs",
+      },
+    ],
+  },
+};
 
 const features = [
   {

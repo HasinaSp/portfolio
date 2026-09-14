@@ -1,8 +1,28 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
+
+export const metadata: Metadata = {
+  title: "À propos",
+
+  description:
+    "Découvrez le parcours, l'approche et les compétences d'Andriamahandry Hasiniavo, développeur web et créateur digital.",
+
+  alternates: {
+    canonical: "/about",
+  },
+
+  openGraph: {
+    title: "À propos — Andriamahandry Hasiniavo",
+    description:
+      "Découvrez mon parcours, mon approche et ma manière de concevoir des produits digitaux.",
+    url: "/about",
+    type: "profile",
+  },
+};
 
 const skills = [
   "Next.js",
