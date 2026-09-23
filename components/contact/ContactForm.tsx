@@ -6,18 +6,77 @@ import { services } from "@/data/services";
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
 
-  function handleSubmit(
+  async function handleSubmit(
     event: React.FormEvent<HTMLFormElement>
   ) {
     event.preventDefault();
 
     setIsSubmitting(true);
+    setStatus(null);
 
-    // API à connecter à l'étape suivante.
-    setTimeout(() => {
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      company: formData.get("company"),
+      service: formData.get("service"),
+      budget: formData.get("budget"),
+      message: formData.get("message"),
+    };
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        const errors = result.errors;
+
+        const firstError = errors
+          ? Object.values(errors).flat()[0]
+          : null;
+
+        setStatus({
+          type: "error",
+          message:
+            firstError ||
+            result.message ||
+            "Veuillez vérifier les informations saisies.",
+        });
+
+        return;
+      }
+
+      setStatus({
+        type: "success",
+        message:
+          result.message ||
+          "Votre demande a bien été envoyée.",
+      });
+
+      form.reset();
+    } catch {
+      setStatus({
+        type: "error",
+        message:
+          "Impossible d'envoyer votre demande. Réessayez dans quelques instants.",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 800);
+    }
   }
 
   return (
@@ -25,7 +84,8 @@ export default function ContactForm() {
       onSubmit={handleSubmit}
       className="space-y-8"
     >
-      <div className="grid gap-6 sm:grid-cols-2">
+      {/* ... tes champs actuels ... */}
+            <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label
             htmlFor="name"
@@ -181,6 +241,18 @@ export default function ContactForm() {
           ? "Envoi en cours..."
           : "Envoyer ma demande"}
       </button>
+
+      {status && (
+        <p
+          className={`text-sm leading-6 ${
+            status.type === "success"
+              ? "text-green-500"
+              : "text-red-400"
+          }`}
+        >
+          {status.message}
+        </p>
+      )}
 
       <p className="text-xs leading-6 text-neutral-600">
         Vos informations seront utilisées uniquement pour
