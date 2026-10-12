@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
+import ProjectImage from "@/components/projects/ProjectImage";
+import ProjectNavigation from "@/components/projects/ProjectNavigation";
 import { projects } from "@/data/projects";
 
 interface ProjectPageProps {
@@ -62,6 +64,11 @@ export default async function ProjectDetailPage({
   const currentIndex = projects.findIndex(
     (item) => item.slug === project.slug
   );
+
+  const previousProject =
+    projects[
+        (currentIndex - 1 + projects.length) % projects.length
+  ];
 
   const nextProject =
     projects[(currentIndex + 1) % projects.length];
@@ -122,13 +129,12 @@ export default async function ProjectDetailPage({
       <Section className="py-8">
         <Container>
           <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-[#242424] bg-[#0a0a0a] sm:aspect-[16/9]">
-            <Image
-              src={project.image}
-              alt={`Vue principale du projet ${project.title}`}
-              fill
-              priority
-              sizes="(max-width: 1280px) 100vw, 1280px"
-              className="object-cover"
+            <ProjectImage
+            src={project.image}
+            alt={`Vue principale du projet ${project.title}`}
+            title={project.title}
+            priority
+            sizes="(max-width: 1280px) 100vw, 1280px"
             />
           </div>
         </Container>
@@ -244,16 +250,15 @@ export default async function ProjectDetailPage({
                     : "aspect-[4/3]"
                 }`}
               >
-                <Image
-                  src={image}
-                  alt={`${project.title} — capture ${index + 1}`}
-                  fill
-                  sizes={
+                <ProjectImage
+                src={image}
+                alt={`${project.title} — capture ${index + 1}`}
+                title={project.title}
+                sizes={
                     index === 0
-                      ? "(max-width: 640px) 100vw, 1200px"
-                      : "(max-width: 640px) 100vw, 600px"
-                  }
-                  className="object-cover transition-transform duration-700 hover:scale-[1.02]"
+                    ? "(max-width: 640px) 100vw, 1200px"
+                    : "(max-width: 640px) 100vw, 600px"
+                }
                 />
               </div>
             ))}
@@ -261,37 +266,47 @@ export default async function ProjectDetailPage({
         </Container>
       </Section>
 
-      <Section className="border-t border-[#1f1f1f]">
-        <Container>
-          <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-end">
-            <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
-                Projet suivant
-              </p>
+    <Section className="border-t border-[#1f1f1f]">
+    <Container>
+        <div className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+        <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+            Continuer l’exploration
+            </p>
 
-              <Link
-                href={`/projects/${nextProject.slug}`}
-                className="group mt-4 inline-flex items-center gap-4"
-              >
-                <h2 className="text-3xl font-medium tracking-tight text-white transition-colors group-hover:text-[#d00018] sm:text-5xl">
-                  {nextProject.title}
-                </h2>
+            <h2 className="mt-4 text-3xl font-medium tracking-tight text-white sm:text-5xl">
+            Découvrir d’autres projets.
+            </h2>
+        </div>
 
-                <span className="text-2xl text-neutral-500 transition-transform group-hover:translate-x-2">
-                  →
-                </span>
-              </Link>
-            </div>
+        <Link
+            href="/projects"
+            className="text-sm text-neutral-400 transition-colors hover:text-[#d00018]"
+        >
+            Tous les projets <span aria-hidden="true">↗</span>
+        </Link>
+        </div>
 
-            <Link
-              href="/contact"
-              className="inline-flex w-fit items-center justify-center rounded-full border border-[#333] px-6 py-3.5 text-sm text-white transition-colors hover:border-[#d00018] hover:bg-[#190003]"
-            >
-              Discuter d’un projet
-            </Link>
-          </div>
-        </Container>
-      </Section>
+        <ProjectNavigation
+        previousProject={previousProject}
+        nextProject={nextProject}
+        />
+
+        <div className="mt-16 flex flex-col justify-between gap-6 border-t border-[#242424] pt-10 sm:flex-row sm:items-center">
+        <p className="max-w-xl text-sm leading-7 text-neutral-400">
+            Vous avez un projet en tête ? Échangeons sur vos besoins
+            et les solutions digitales que nous pouvons construire.
+        </p>
+
+        <Link
+            href="/contact"
+            className="inline-flex w-fit items-center justify-center rounded-full bg-[#d00018] px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-[#b60015]"
+        >
+            Discuter d’un projet
+        </Link>
+        </div>
+    </Container>
+    </Section>
     </>
   );
 }
