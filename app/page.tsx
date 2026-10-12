@@ -2,51 +2,36 @@ import Image from "next/image";
 import Link from "next/link";
 
 import Container from "@/components/ui/Container";
-import Section from "@/components/ui/Section";
+import ProjectCard from "@/components/projects/ProjectCard";
+import { projects } from "@/data/projects";
 
-const projects = [
+const featuredProjects = projects.filter((project) => project.featured);
+
+const services = [
   {
     number: "01",
-    title: "LUMI",
-    category: "SaaS · Digital",
+    title: "Web design",
     description:
-      "Une plateforme pensée pour aider les restaurateurs à améliorer leur présence digitale, optimiser leurs menus et développer leur activité.",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Prisma"],
-    image: "/projects/lumi/hero.png",
-    href: "/projects/lumi",
-    featured: true,
+      "Des interfaces soignées, lisibles et pensées pour offrir une expérience utilisateur cohérente.",
   },
   {
     number: "02",
-    title: "Projet à venir",
-    category: "Web · Application",
+    title: "Développement web",
     description:
-      "Un nouveau projet sera bientôt présenté ici.",
-    technologies: ["Next.js", "TypeScript"],
-    image: "/projects/project-02.jpg",
-    href: "/projects/project-02",
-    featured: false,
+      "Des sites et applications web performants, conçus avec des technologies modernes.",
   },
   {
     number: "03",
-    title: "Projet à venir",
-    category: "Digital · Web",
+    title: "Solutions digitales",
     description:
-      "Une nouvelle réalisation sera bientôt disponible.",
-    technologies: ["React", "TypeScript"],
-    image: "/projects/project-03.jpg",
-    href: "/projects/project-03",
-    featured: false,
+      "Des outils adaptés à des besoins concrets pour transformer une idée en solution utile.",
   },
 ];
 
 export default function HomePage() {
   return (
-    <>
-      {/* =====================================================
-          HERO
-      ===================================================== */}
-
+    <main>
+      {/* HERO */}
       <section className="relative overflow-hidden border-b border-[#1f1f1f]">
         <div
           aria-hidden="true"
@@ -54,401 +39,214 @@ export default function HomePage() {
         />
 
         <Container>
-          <div className="relative flex min-h-[calc(100vh-80px)] flex-col justify-center py-24 sm:py-32 lg:py-40">
-            <div className="mb-10 flex items-center gap-4">
+          <div className="relative flex min-h-[calc(100svh-80px)] flex-col justify-center py-24 sm:py-32">
+            <div className="mb-8 flex items-center gap-4">
               <span className="h-px w-10 bg-[#d00018]" />
-
-              <p className="text-xs font-medium uppercase tracking-[0.25em] text-neutral-500">
-                Andriamahandry Hasiniavo · Développement digital
+              <p className="text-xs font-medium uppercase tracking-[0.22em] text-neutral-500">
+                Développement web · Création digitale
               </p>
             </div>
 
-            <h1 className="max-w-6xl text-balance text-[clamp(3.5rem,8vw,8rem)] font-semibold leading-[0.92] tracking-[-0.055em]">
-              Créateur digital
-              <br />
-              <span className="text-neutral-500">
-                & développeur web.
-              </span>
+            <h1 className="max-w-6xl text-balance text-[clamp(3.2rem,8vw,7.5rem)] font-semibold leading-[0.94] tracking-[-0.055em]">
+              Je conçois des expériences digitales
+              <span className="text-neutral-500"> utiles et durables.</span>
             </h1>
 
-            <div className="mt-16 grid gap-10 lg:mt-20 lg:grid-cols-[1fr_auto] lg:items-end">
-              <div className="max-w-xl">
-                <p className="text-pretty text-lg leading-8 text-neutral-400 sm:text-xl">
-                  Je conçois des expériences digitales élégantes,
-                  performantes et pensées pour répondre à de vrais
-                  besoins.
+            <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+              <div className="max-w-2xl">
+                <p className="text-pretty text-base leading-8 text-neutral-400 sm:text-lg">
+                  Je suis Andriamahandry Hasiniavo. J’accompagne les idées
+                  de leur conception jusqu’à leur réalisation, en associant
+                  réflexion, design et développement web.
                 </p>
 
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                   <Link
                     href="/projects"
-                    className="inline-flex items-center justify-center rounded-full bg-[#d00018] px-7 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-[#b60015] hover:shadow-[0_0_35px_rgba(208,0,24,0.18)]"
+                    className="inline-flex items-center justify-center gap-3 rounded-full bg-[#d00018] px-7 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-[#b60015] hover:shadow-[0_0_30px_rgba(208,0,24,0.18)]"
                   >
-                    Voir mes projets
+                    Explorer mes projets <span aria-hidden="true">↗</span>
                   </Link>
 
                   <Link
-                    href="/services"
-                    className="inline-flex items-center justify-center rounded-full border border-[#2a2a2a] px-7 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:border-[#d00018] hover:bg-[#190003]"
+                    href="/contact"
+                    className="inline-flex items-center justify-center rounded-full border border-[#2a2a2a] px-7 py-3.5 text-sm font-medium text-white transition-colors duration-300 hover:border-[#d00018]"
                   >
-                    Découvrir mes services
+                    Discutons de votre projet
                   </Link>
                 </div>
               </div>
 
-              <div className="hidden lg:flex lg:flex-col lg:items-center lg:gap-4">
-                <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-neutral-600 [writing-mode:vertical-rl]">
-                  Scroll
-                </span>
-
-                <span className="h-16 w-px bg-gradient-to-b from-[#d00018] to-transparent" />
-              </div>
+              <p className="hidden text-right text-xs leading-6 text-neutral-600 lg:block">
+                De l’idée<br />
+                au produit digital.
+              </p>
             </div>
           </div>
         </Container>
       </section>
 
-      {/* =====================================================
-          INTRO
-      ===================================================== */}
-
-      <Section>
+      {/* APPROCHE */}
+      <section className="border-b border-[#1f1f1f]">
         <Container>
-          <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-[0.25em] text-[#d00018]">
-                Une approche simple
-              </p>
-            </div>
+          <div className="grid gap-8 py-20 sm:py-28 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
+            <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
+              Ma philosophie
+            </p>
 
             <div>
-              <h2 className="text-balance text-3xl font-medium leading-tight tracking-[-0.035em] sm:text-4xl lg:text-5xl">
-                Transformer une idée en produit
+              <h2 className="text-balance text-3xl font-medium leading-tight tracking-[-0.04em] sm:text-4xl lg:text-5xl">
+                La technologie doit servir une idée,
                 <span className="text-neutral-500">
-                  {" "}
-                  clair, utile et mémorable.
+                  {" "}pas la compliquer.
                 </span>
               </h2>
 
-              <p className="mt-8 max-w-2xl text-base leading-8 text-neutral-500">
-                Chaque projet commence par comprendre le besoin,
-                puis construire une expérience qui combine design,
-                technologie et simplicité.
+              <p className="mt-6 max-w-2xl text-base leading-8 text-neutral-500">
+                Chaque projet mérite une approche adaptée à ses objectifs :
+                comprendre le besoin, définir une direction claire et construire
+                une expérience simple à utiliser, solide et évolutive.
               </p>
             </div>
           </div>
         </Container>
-      </Section>
+      </section>
 
-      {/* =====================================================
-          ABOUT
-      ===================================================== */}
-
-      <section className="border-y border-[#1f1f1f]">
+      {/* À PROPOS */}
+      <section className="border-b border-[#1f1f1f]">
         <Container>
-          <div className="grid gap-14 py-24 sm:py-32 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-24">
-
-            {/* PHOTO */}
-            <div>
-              <div className="relative mx-auto aspect-[4/5] max-w-sm overflow-hidden border border-[#1f1f1f] bg-[#0a0a0a] lg:mx-0 rounded-md">
-                <Image
-                  src="/about/profile.jpeg"
-                  alt="Andriamahandry Hasiniavo"
-                  fill
-                  className="object-cover transition-transform duration-700 hover:scale-[1.03]"
-                  sizes="(max-width: 1024px) 100vw, 400px"
-                />
-
-                <div className="absolute inset-0 border border-white/5" />
-
-                <div className="absolute bottom-5 left-5">
-                  <span className="rounded-full border border-white/15 bg-black/60 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-white/70 backdrop-blur-md">
-                    Développeur · Créateur digital
-                  </span>
-                </div>
+          <div className="grid gap-12 py-20 sm:py-28 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-20">
+            <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-md border border-[#1f1f1f] bg-[#0a0a0a] lg:mx-0">
+              <Image
+                src="/about/profile.jpeg"
+                alt="Portrait d’Andriamahandry Hasiniavo"
+                fill
+                sizes="(max-width: 1024px) 100vw, 400px"
+                className="object-cover"
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-5 pt-16">
+                <p className="text-xs uppercase tracking-[0.18em] text-white/70">
+                  Développement · Création digitale
+                </p>
               </div>
             </div>
 
-            {/* BIO */}
             <div>
-              <div className="flex items-center gap-4">
-                <span className="h-px w-8 bg-[#d00018]" />
+              <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
+                À propos
+              </p>
 
-                <p className="text-xs font-medium uppercase tracking-[0.25em] text-neutral-500">
-                  À propos de moi
-                </p>
-              </div>
-
-              <h2 className="mt-7 text-balance text-3xl font-medium leading-tight tracking-[-0.04em] sm:text-4xl lg:text-5xl">
-                Je transforme des idées en
-                <span className="text-neutral-500">
-                  {" "}
-                  expériences digitales.
-                </span>
+              <h2 className="mt-5 text-balance text-3xl font-medium leading-tight tracking-[-0.04em] sm:text-4xl lg:text-5xl">
+                Donner forme aux idées et les rendre concrètes.
               </h2>
 
-              <div className="mt-8 max-w-2xl space-y-5 text-base leading-8 text-neutral-500">
+              <div className="mt-6 max-w-2xl space-y-4 text-base leading-8 text-neutral-500">
                 <p>
                   Je suis Andriamahandry Hasiniavo, créateur digital et
-                  développeur web. Je conçois des interfaces et des produits
-                  digitaux avec une approche centrée sur l'utilisateur,
-                  la simplicité et la performance.
+                  développeur web. Je m’intéresse à la conception d’interfaces
+                  et au développement de produits qui répondent à de vrais besoins.
                 </p>
-
                 <p>
-                  J'aime transformer des problématiques concrètes en
-                  solutions digitales élégantes, utiles et capables
-                  d'évoluer dans le temps.
+                  Mon objectif : allier réflexion, simplicité et qualité
+                  technique pour créer des expériences utiles et cohérentes.
                 </p>
-              </div>
-
-              <div className="mt-10">
-                <Link
-                  href="/about"
-                  className="group inline-flex items-center gap-3 text-sm font-medium text-white transition-colors duration-300 hover:text-[#d00018]"
-                >
-                  <span>En savoir plus sur moi</span>
-
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">
-                    →
-                  </span>
-                </Link>
-              </div>
-            </div>
-
-          </div>
-        </Container>
-      </section>
-
-      {/* =====================================================
-          PROJECTS
-      ===================================================== */}
-
-      <section
-        id="projects"
-        className="border-y border-[#1f1f1f]"
-      >
-        <Container>
-          <div className="py-24 sm:py-32">
-            {/* Section header */}
-
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <div className="flex items-center gap-4">
-                  <span className="h-px w-8 bg-[#d00018]" />
-
-                  <p className="text-xs font-medium uppercase tracking-[0.25em] text-neutral-500">
-                    Sélection
-                  </p>
-                </div>
-
-                <h2 className="mt-6 text-balance text-4xl font-medium tracking-[-0.045em] sm:text-5xl lg:text-6xl">
-                  Projets
-                  <span className="text-neutral-500">
-                    {" "}
-                    sélectionnés.
-                  </span>
-                </h2>
               </div>
 
               <Link
-                href="/projects"
-                className="group inline-flex items-center gap-3 text-sm text-neutral-500 transition-colors hover:text-white"
+                href="/about"
+                className="group mt-8 inline-flex items-center gap-3 text-sm font-medium text-white transition-colors hover:text-[#d00018]"
               >
-                <span>Voir tous les projets</span>
-
-                <span className="transition-transform duration-300 group-hover:translate-x-1">
+                En savoir plus sur mon parcours
+                <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">
                   →
                 </span>
               </Link>
             </div>
+          </div>
+        </Container>
+      </section>
 
-            {/* Featured project */}
+      {/* PROJETS */}
+      <section id="projects" className="border-b border-[#1f1f1f]">
+        <Container>
+          <div className="py-20 sm:py-28">
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
+                  Portfolio
+                </p>
+                <h2 className="mt-4 text-4xl font-medium tracking-[-0.045em] sm:text-5xl">
+                  Projets sélectionnés<span className="text-neutral-500">.</span>
+                </h2>
+                <p className="mt-4 max-w-xl text-sm leading-7 text-neutral-500">
+                  Des projets personnels et des contributions à des produits
+                  et plateformes numériques.
+                </p>
+              </div>
 
-            <div className="mt-20">
               <Link
-                href={projects[0].href}
-                className="group block"
+                href="/projects"
+                className="inline-flex items-center gap-3 text-sm text-neutral-400 transition-colors hover:text-white"
               >
-                {/* Image */}
-
-                <div className="relative aspect-[16/9] overflow-hidden border border-[#1f1f1f] bg-[#0a0a0a]">
-                  <Image
-                    src={projects[0].image}
-                    alt="Aperçu du projet LUMI"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                    sizes="(max-width: 1024px) 100vw, 1280px"
-                  />
-
-                  <div className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-black/0" />
-
-                  {/* Red accent */}
-                  <div className="absolute left-0 top-0 h-full w-px origin-top scale-y-0 bg-[#d00018] transition-transform duration-700 group-hover:scale-y-100" />
-
-                  {/* Project number */}
-                  <div className="absolute left-6 top-6 sm:left-8 sm:top-8">
-                    <span className="text-xs font-medium text-white/60">
-                      {projects[0].number}
-                    </span>
-                  </div>
-
-                  {/* Category */}
-                  <div className="absolute right-6 top-6 sm:right-8 sm:top-8">
-                    <span className="rounded-full border border-white/20 bg-black/50 px-4 py-2 text-[10px] uppercase tracking-[0.18em] text-white/70 backdrop-blur-md">
-                      {projects[0].category}
-                    </span>
-                  </div>
-
-                  {/* Hover arrow */}
-                  <div className="absolute bottom-6 right-6 flex h-12 w-12 translate-y-3 items-center justify-center rounded-full border border-white/20 bg-black/60 text-white opacity-0 backdrop-blur-md transition-all duration-500 group-hover:translate-y-0 group-hover:border-[#d00018] group-hover:opacity-100 sm:bottom-8 sm:right-8">
-                    ↗
-                  </div>
-                </div>
-
-                {/* Content */}
-
-                <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_auto]">
-                  <div>
-                    <h3 className="text-3xl font-medium tracking-[-0.04em] transition-colors duration-300 group-hover:text-[#d00018] sm:text-4xl">
-                      {projects[0].title}
-                    </h3>
-
-                    <p className="mt-4 max-w-2xl text-base leading-7 text-neutral-500">
-                      {projects[0].description}
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap content-start gap-2 lg:max-w-xs lg:justify-end">
-                    {projects[0].technologies.map((technology) => (
-                      <span
-                        key={technology}
-                        className="rounded-full border border-[#242424] px-3 py-1.5 text-[10px] uppercase tracking-[0.12em] text-neutral-500"
-                      >
-                        {technology}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                Tous les projets <span aria-hidden="true">↗</span>
               </Link>
             </div>
 
-            {/* Secondary projects */}
-
-            <div className="mt-24 grid gap-0 border-y border-[#1f1f1f] md:grid-cols-2 md:divide-x md:divide-[#1f1f1f]">
-              {projects.slice(1).map((project) => (
-                <Link
-                  key={project.number}
-                  href={project.href}
-                  className="group p-6 transition-colors duration-300 hover:bg-white/[0.015] sm:p-8 lg:p-10"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-neutral-600">
-                      {project.number}
-                    </span>
-
-                    <span className="text-neutral-700 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#d00018]">
-                      ↗
-                    </span>
-                  </div>
-
-                  <div className="relative mt-8 aspect-[16/10] overflow-hidden border border-[#1f1f1f] bg-[#0a0a0a]">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-4xl font-semibold tracking-[-0.05em] text-white/[0.035]">
-                        {project.number}
-                      </span>
-                    </div>
-
-                    <div className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-[#d00018] transition-transform duration-500 group-hover:scale-x-100" />
-                  </div>
-
-                  <div className="mt-7">
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-600">
-                      {project.category}
-                    </p>
-
-                    <h3 className="mt-3 text-2xl font-medium tracking-[-0.035em] transition-colors duration-300 group-hover:text-[#d00018]">
-                      {project.title}
-                    </h3>
-
-                    <p className="mt-3 text-sm leading-7 text-neutral-500">
-                      {project.description}
-                    </p>
-                  </div>
-                </Link>
+            <div className="mt-12 grid gap-8 md:grid-cols-2">
+              {featuredProjects.map((project) => (
+                <ProjectCard key={project.slug} project={project} />
               ))}
             </div>
           </div>
         </Container>
       </section>
 
-      {/* =====================================================
-          SERVICES
-      ===================================================== */}
-
+      {/* SERVICES */}
       <section className="border-b border-[#1f1f1f]">
         <Container>
-          <div className="py-24 sm:py-32">
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div className="py-20 sm:py-28">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-xs font-medium uppercase tracking-[0.25em] text-[#d00018]">
-                  Services
+                <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
+                  Expertise
                 </p>
-
-                <h2 className="mt-4 text-3xl font-medium tracking-[-0.035em] sm:text-4xl">
-                  Ce que je construis.
+                <h2 className="mt-4 text-3xl font-medium tracking-[-0.04em] sm:text-4xl">
+                  Comment je peux vous aider.
                 </h2>
               </div>
 
               <Link
                 href="/services"
-                className="text-sm text-neutral-500 transition-colors hover:text-white"
+                className="text-sm text-neutral-400 transition-colors hover:text-white"
               >
-                Voir tous les services →
+                Découvrir les services ↗
               </Link>
             </div>
 
-            <div className="mt-16 divide-y divide-[#1f1f1f] border-y border-[#1f1f1f]">
-              {[
-                {
-                  number: "01",
-                  title: "Web design",
-                  description:
-                    "Des interfaces modernes, élégantes et pensées pour offrir une expérience claire.",
-                },
-                {
-                  number: "02",
-                  title: "Développement",
-                  description:
-                    "Des applications web rapides, solides et construites avec des technologies modernes.",
-                },
-                {
-                  number: "03",
-                  title: "Solutions digitales",
-                  description:
-                    "Des outils conçus autour de problématiques concrètes et de vrais objectifs.",
-                },
-              ].map((service) => (
+            <div className="mt-12 divide-y divide-[#1f1f1f] border-y border-[#1f1f1f]">
+              {services.map((service) => (
                 <Link
                   key={service.number}
                   href="/services"
-                  className="group grid gap-6 py-8 transition-colors duration-300 hover:bg-white/[0.015] sm:grid-cols-[80px_1fr_auto] sm:items-start"
+                  className="group grid gap-4 py-7 transition-colors sm:grid-cols-[64px_1fr_auto] sm:items-center sm:gap-8"
                 >
                   <span className="text-xs text-neutral-600">
                     {service.number}
                   </span>
 
                   <div>
-                    <h3 className="text-xl font-medium transition-colors duration-300 group-hover:text-[#d00018] sm:text-2xl">
+                    <h3 className="text-xl font-medium transition-colors group-hover:text-[#d00018] sm:text-2xl">
                       {service.title}
                     </h3>
-
-                    <p className="mt-3 max-w-xl text-sm leading-7 text-neutral-500">
+                    <p className="mt-2 max-w-2xl text-sm leading-7 text-neutral-500">
                       {service.description}
                     </p>
                   </div>
 
-                  <span className="text-xl text-neutral-700 transition-all duration-300 group-hover:translate-x-1 group-hover:text-[#d00018]">
+                  <span
+                    aria-hidden="true"
+                    className="text-xl text-neutral-600 transition-all group-hover:translate-x-1 group-hover:text-[#d00018]"
+                  >
                     ↗
                   </span>
                 </Link>
@@ -458,43 +256,49 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* =====================================================
-          FINAL CTA
-      ===================================================== */}
-
-      <Section>
+      {/* CONTACT */}
+      <section className="py-20 sm:py-28">
         <Container>
-          <div className="relative overflow-hidden border border-[#1f1f1f] px-6 py-16 sm:px-12 sm:py-20 lg:px-20 lg:py-24">
+          <div className="relative overflow-hidden rounded-md border border-[#1f1f1f] px-6 py-14 sm:px-12 sm:py-20 lg:px-16">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#d00018]/10 blur-[100px]"
             />
 
             <div className="relative max-w-3xl">
-              <p className="text-xs font-medium uppercase tracking-[0.25em] text-[#d00018]">
-                Un projet en tête ?
+              <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
+                Une idée à concrétiser ?
               </p>
 
-              <h2 className="mt-6 text-balance text-4xl font-medium leading-tight tracking-[-0.045em] sm:text-5xl lg:text-6xl">
-                Construisons quelque chose
-                <span className="text-neutral-500">
-                  {" "}
-                  qui mérite d'exister.
-                </span>
+              <h2 className="mt-5 text-balance text-4xl font-medium leading-tight tracking-[-0.045em] sm:text-5xl lg:text-6xl">
+                Parlons de votre prochain projet.
               </h2>
 
-              <div className="mt-10">
+              <p className="mt-5 max-w-xl text-base leading-8 text-neutral-500">
+                Présentez-moi votre besoin et voyons ensemble comment lui
+                donner forme.
+              </p>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center gap-3 rounded-full bg-[#d00018] px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-[#b60015]"
+                >
+                  Demander une collaboration
+                  <span aria-hidden="true">↗</span>
+                </Link>
+
                 <Link
                   href="/services"
-                  className="inline-flex items-center rounded-full bg-[#d00018] px-7 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-[#b60015] hover:shadow-[0_0_35px_rgba(208,0,24,0.18)]"
+                  className="inline-flex items-center justify-center rounded-full border border-[#2a2a2a] px-7 py-3.5 text-sm font-medium text-white transition-colors hover:border-[#d00018]"
                 >
-                  Travailler ensemble
+                  Consulter les services
                 </Link>
               </div>
             </div>
           </div>
         </Container>
-      </Section>
-    </>
+      </section>
+    </main>
   );
 }

@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 
+import ProjectImage from "@/components/projects/ProjectImage";
 import type { Project } from "@/types/project";
 
 interface ProjectCardProps {
@@ -18,13 +18,13 @@ export default function ProjectCard({
         aria-label={`Découvrir le projet ${project.title}`}
       >
         <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#1f1f1f] bg-[#0a0a0a]">
-          <Image
-            src={project.image}
-            alt={`Aperçu du projet ${project.title}`}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-          />
+            <ProjectImage
+                src={project.image}
+                alt={`Aperçu du projet ${project.title}`}
+                title={project.title}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                className="transition-transform duration-700 group-hover:scale-[1.02]"
+                />
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-90" />
 
