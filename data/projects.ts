@@ -65,6 +65,8 @@ export const projects: Project[] = [
       "Next.js",
       "TypeScript",
       "Tailwind CSS",
+      "Prisma",
+      "PostgreSQL",
     ],
 
     image:
@@ -105,6 +107,7 @@ export const projects: Project[] = [
       "Next.js",
       "TypeScript",
       "Tailwind CSS",
+      "DevOps",
     ],
 
     image: "/projects/build-on/image-1.png",
@@ -139,8 +142,13 @@ export const projects: Project[] = [
       "Participation au développement de l'application et à la réalisation de certaines interfaces.",
 
     technologies: [
-      "Next.js",
+      "Vue.js",
       "TypeScript",
+      "JSX",
+      "Laravel",
+      "Redis",
+      "Postman",
+      "Automation",
     ],
 
     image: "/projects/danapay/image-1.png",
@@ -178,6 +186,10 @@ export const projects: Project[] = [
       "Next.js",
       "TypeScript",
       "Tailwind CSS",
+      "Wordpress",
+      "Docker",
+      "Gotenberg",
+      "MySQL",
     ],
 
     image: "/projects/cci-var/image-1.webp",
