@@ -94,7 +94,7 @@ export const projects: Project[] = [
     description:
       "Une plateforme corporate dédiée aux services BIM & CAD, aux dossiers réglementaires et à la construction clé en main.",
 
-    year: "2026",
+    year: "2023 - 2024",
 
     role: "Contribution au projet",
 
@@ -131,7 +131,7 @@ export const projects: Project[] = [
     description:
       "Une application web destinée à accompagner des usages financiers et des opérations digitales.",
 
-    year: "2026",
+    year: "2024 - 2025",
 
     role: "Contribution au projet",
 
@@ -167,7 +167,7 @@ export const projects: Project[] = [
     description:
       "Un projet digital réalisé dans un contexte professionnel, présenté ici à travers plusieurs vues de l'interface.",
 
-    year: "2026",
+    year: "2025 - 2026",
 
     role: "Contribution au projet",
 
@@ -180,14 +180,14 @@ export const projects: Project[] = [
       "Tailwind CSS",
     ],
 
-    image: "/projects/cci-var/image-1.png",
+    image: "/projects/cci-var/image-1.webp",
 
     gallery: [
-      "/projects/cci-var/image-1.png",
-      "/projects/cci-var/image-2.png",
-      "/projects/cci-var/image-3.png",
-      "/projects/cci-var/image-4.png",
-      "/projects/cci-var/image-5.png",
+      "/projects/cci-var/image-1.webp",
+      "/projects/cci-var/image-2.jpeg",
+      "/projects/cci-var/image-3.jpeg",
+      "/projects/cci-var/image-4.jpeg",
+      "/projects/cci-var/image-5.jpeg",
     ],
   },
 ];
