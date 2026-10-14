@@ -8,6 +8,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 import "./globals.css";
+import AuthSessionProvider from "@/components/auth/SessionProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -94,6 +95,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable}`}
       >
+      <AuthSessionProvider>
         <div className="flex min-h-screen flex-col">
           <Header />
 
@@ -103,7 +105,7 @@ export default function RootLayout({
 
           <Footer />
         </div>
-
+      </AuthSessionProvider>
         <Analytics />
         <SpeedInsights />
       </body>

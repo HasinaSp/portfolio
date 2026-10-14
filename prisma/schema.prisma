@@ -31,7 +31,8 @@ model ContactRequest {
 
 enum ContactStatus {
   NEW
-  READ
-  REPLIED
-  ARCHIVED
+  CONTACTED
+  IN_PROGRESS
+  ACCEPTED
+  REJECTED
 }
