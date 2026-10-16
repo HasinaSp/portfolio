@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { Analytics } from "@vercel/analytics/next";
@@ -6,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import MotionProvider from "@/components/motion/MotionProvider";
 
 import "./globals.css";
 
@@ -101,15 +103,18 @@ export default function RootLayout({
           Aller au contenu
         </a>
 
-        <div className="flex min-h-screen flex-col">
-          <Header />
+        <MotionProvider>
+          <div className="flex min-h-screen flex-col">
+            <Header />
 
-          <main id="contenu" className="flex-1">
-            {children}
-          </main>
+            <main id="contenu" className="flex-1">
+              {/* Fondu enchaîné entre les pages (navigations Next.js). */}
+              <ViewTransition default="page-fade">{children}</ViewTransition>
+            </main>
 
-          <Footer />
-        </div>
+            <Footer />
+          </div>
+        </MotionProvider>
         <Analytics />
         <SpeedInsights />
       </body>

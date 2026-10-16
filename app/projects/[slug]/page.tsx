@@ -2,7 +2,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 
+import ScrollProgress from "@/components/motion/ScrollProgress";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import ProjectImage from "@/components/projects/ProjectImage";
@@ -74,6 +76,8 @@ export default async function ProjectDetailPage({
 
   return (
     <>
+      <ScrollProgress />
+
       <Section className="pb-12 pt-20 sm:pt-28">
         <Container>
           <Link
@@ -128,13 +132,17 @@ export default async function ProjectDetailPage({
       <Section className="py-8">
         <Container>
           <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-[#242424] bg-[#0a0a0a] sm:aspect-[16/9]">
-            <ProjectImage
-            src={project.image}
-            alt={`Vue principale du projet ${project.title}`}
-            title={project.title}
-            priority
-            sizes="(max-width: 1280px) 100vw, 1280px"
-            />
+            <ViewTransition name={`project-${project.slug}`} share="morph" default="none">
+              <div className="absolute inset-0">
+                <ProjectImage
+                  src={project.image}
+                  alt={`Vue principale du projet ${project.title}`}
+                  title={project.title}
+                  priority
+                  sizes="(max-width: 1280px) 100vw, 1280px"
+                />
+              </div>
+            </ViewTransition>
           </div>
         </Container>
       </Section>

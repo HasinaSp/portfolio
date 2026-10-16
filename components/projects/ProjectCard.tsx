@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { ViewTransition } from "react";
 
+import ParallaxMedia from "@/components/motion/ParallaxMedia";
 import ProjectImage from "@/components/projects/ProjectImage";
 import type { Project } from "@/types/project";
 
@@ -18,13 +20,21 @@ export default function ProjectCard({
         aria-label={`Découvrir le projet ${project.title}`}
       >
         <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#1f1f1f] bg-[#0a0a0a]">
-            <ProjectImage
-                src={project.image}
-                alt={`Aperçu du projet ${project.title}`}
-                title={project.title}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                className="transition-transform duration-700 group-hover:scale-[1.02]"
+          {/* Même nom que l'image principale de la page projet : la vignette
+              s'y transforme à la navigation (View Transitions). */}
+          <ViewTransition name={`project-${project.slug}`} share="morph" default="none">
+            <div className="absolute inset-0">
+              <ParallaxMedia distance={5}>
+                <ProjectImage
+                  src={project.image}
+                  alt={`Aperçu du projet ${project.title}`}
+                  title={project.title}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                  className="transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                 />
+              </ParallaxMedia>
+            </div>
+          </ViewTransition>
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-90" />
 

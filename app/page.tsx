@@ -5,6 +5,14 @@ import Container from "@/components/ui/Container";
 import ProjectCard from "@/components/projects/ProjectCard";
 import { projects } from "@/data/projects";
 import { contact } from "@/lib/contact";
+import Magnetic from "@/components/motion/Magnetic";
+import ParallaxMedia from "@/components/motion/ParallaxMedia";
+import Marquee from "@/components/motion/Marquee";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
+import SplitWords from "@/components/motion/SplitWords";
+
+// Bandeau défilant : technologies de tous les projets, sans doublon.
+const technologies = [...new Set(projects.flatMap((project) => project.technologies))];
 
 const featuredProjects = projects.filter((project) => project.featured);
 
@@ -56,49 +64,73 @@ export default function HomePage() {
       <section className="relative overflow-hidden border-b border-[#1f1f1f]">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full bg-[#d00018]/10 blur-[140px]"
+          className="glow-breathe pointer-events-none absolute -right-40 -top-40 h-[500px] w-[500px] rounded-full bg-[#d00018]/10 blur-[140px]"
         />
 
         <Container>
           <div className="relative flex min-h-[calc(100svh-80px)] flex-col justify-center py-24 sm:py-32">
             <div className="mb-8 flex items-center gap-4">
-              <span className="h-px w-10 bg-[#d00018]" />
-              <p className="text-xs font-medium uppercase tracking-[0.22em] text-neutral-500">
+              <span
+                className="draw-x h-px w-10 bg-[#d00018]"
+                style={{ "--delay": "0.05s" } as React.CSSProperties}
+              />
+              <p
+                className="enter-up text-xs font-medium uppercase tracking-[0.22em] text-neutral-500"
+                style={{ "--delay": "0.15s" } as React.CSSProperties}
+              >
                 Développement web · Création digitale
               </p>
             </div>
 
             <h1 className="max-w-6xl text-balance text-[clamp(3.2rem,8vw,7.5rem)] font-semibold leading-[0.94] tracking-[-0.055em]">
-              Je conçois des expériences digitales
-              <span className="text-neutral-500"> utiles et durables.</span>
+              <SplitWords
+                delay={0.2}
+                segments={[
+                  { text: "Je conçois des expériences digitales" },
+                  { text: "utiles et durables.", className: "text-neutral-500" },
+                ]}
+              />
             </h1>
 
             <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
               <div className="max-w-2xl">
-                <p className="text-pretty text-base leading-8 text-neutral-400 sm:text-lg">
+                <p
+                  className="enter-up text-pretty text-base leading-8 text-neutral-400 sm:text-lg"
+                  style={{ "--delay": "0.75s" } as React.CSSProperties}
+                >
                   Je suis Andriamahandry Hasiniavo. J’accompagne les idées
                   de leur conception jusqu’à leur réalisation, en associant
                   réflexion, design et développement web.
                 </p>
 
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Link
-                    href="/projects"
-                    className="inline-flex items-center justify-center gap-3 rounded-full bg-[#d00018] px-7 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-[#b60015] hover:shadow-[0_0_30px_rgba(208,0,24,0.18)]"
-                  >
-                    Explorer mes projets <span aria-hidden="true">↗</span>
-                  </Link>
+                <div
+                  className="enter-up mt-8 flex flex-col gap-3 sm:flex-row"
+                  style={{ "--delay": "0.9s" } as React.CSSProperties}
+                >
+                  <Magnetic className="flex">
+                    <Link
+                      href="/projects"
+                      className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-[#d00018] px-7 py-3.5 text-sm font-medium text-white transition-[background-color,box-shadow] duration-300 hover:bg-[#b60015] hover:shadow-[0_0_30px_rgba(208,0,24,0.18)]"
+                    >
+                      Explorer mes projets <span aria-hidden="true">↗</span>
+                    </Link>
+                  </Magnetic>
 
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center justify-center rounded-full border border-[#2a2a2a] px-7 py-3.5 text-sm font-medium text-white transition-colors duration-300 hover:border-[#d00018]"
-                  >
-                    Discutons de votre projet
-                  </Link>
+                  <Magnetic className="flex">
+                    <Link
+                      href="/contact"
+                      className="inline-flex w-full items-center justify-center rounded-full border border-[#2a2a2a] px-7 py-3.5 text-sm font-medium text-white transition-colors duration-300 hover:border-[#d00018]"
+                    >
+                      Discutons de votre projet
+                    </Link>
+                  </Magnetic>
                 </div>
               </div>
 
-              <p className="hidden text-right text-xs leading-6 text-neutral-600 lg:block">
+              <p
+                className="enter-up hidden text-right text-xs leading-6 text-neutral-600 lg:block"
+                style={{ "--delay": "1.1s" } as React.CSSProperties}
+              >
                 De l’idée<br />
                 au produit digital.
               </p>
@@ -107,15 +139,25 @@ export default function HomePage() {
         </Container>
       </section>
 
+      {/* TECHNOLOGIES */}
+      <section
+        aria-label="Technologies utilisées"
+        className="border-b border-[#1f1f1f] py-7 text-sm uppercase tracking-[0.2em] text-neutral-500 sm:py-9 sm:text-base"
+      >
+        <Marquee label="Technologies utilisées" items={technologies} />
+      </section>
+
       {/* APPROCHE */}
       <section className="border-b border-[#1f1f1f]">
         <Container>
           <div className="grid gap-8 py-20 sm:py-28 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
-            <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
-              Ma philosophie
-            </p>
+            <Reveal>
+              <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
+                Ma philosophie
+              </p>
+            </Reveal>
 
-            <div>
+            <Reveal delay={0.1}>
               <h2 className="text-balance text-3xl font-medium leading-tight tracking-[-0.04em] sm:text-4xl lg:text-5xl">
                 La technologie doit servir une idée,
                 <span className="text-neutral-500">
@@ -128,7 +170,7 @@ export default function HomePage() {
                 comprendre le besoin, définir une direction claire et construire
                 une expérience simple à utiliser, solide et évolutive.
               </p>
-            </div>
+            </Reveal>
           </div>
         </Container>
       </section>
@@ -137,22 +179,24 @@ export default function HomePage() {
       <section className="border-b border-[#1f1f1f]">
         <Container>
           <div className="grid gap-12 py-20 sm:py-28 lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-20">
-            <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-md border border-[#1f1f1f] bg-[#0a0a0a] lg:mx-0">
-              <Image
-                src="/about/profile.jpeg"
-                alt="Portrait d’Andriamahandry Hasiniavo"
-                fill
-                sizes="(max-width: 1024px) 100vw, 400px"
-                className="object-cover"
-              />
+            <Reveal className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-md border border-[#1f1f1f] bg-[#0a0a0a] lg:mx-0">
+              <ParallaxMedia distance={5}>
+                <Image
+                  src="/about/profile.jpeg"
+                  alt="Portrait d’Andriamahandry Hasiniavo"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 400px"
+                  className="object-cover"
+                />
+              </ParallaxMedia>
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-5 pt-16">
                 <p className="text-xs uppercase tracking-[0.18em] text-white/70">
                   Développement · Création digitale
                 </p>
               </div>
-            </div>
+            </Reveal>
 
-            <div>
+            <Reveal delay={0.12}>
               <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
                 À propos
               </p>
@@ -182,7 +226,7 @@ export default function HomePage() {
                   →
                 </span>
               </Link>
-            </div>
+            </Reveal>
           </div>
         </Container>
       </section>
@@ -213,11 +257,13 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="mt-12 grid gap-8 md:grid-cols-2">
+            <RevealGroup className="mt-12 grid gap-8 md:grid-cols-2" stagger={0.12}>
               {featuredProjects.map((project) => (
-                <ProjectCard key={project.slug} project={project} />
+                <RevealItem key={project.slug}>
+                  <ProjectCard project={project} />
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           </div>
         </Container>
       </section>
@@ -244,10 +290,10 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="mt-12 divide-y divide-[#1f1f1f] border-y border-[#1f1f1f]">
+            <RevealGroup className="mt-12 divide-y divide-[#1f1f1f] border-y border-[#1f1f1f]">
               {services.map((service) => (
+                <RevealItem key={service.number}>
                 <Link
-                  key={service.number}
                   href="/services"
                   className="group grid gap-4 py-7 transition-colors sm:grid-cols-[64px_1fr_auto] sm:items-center sm:gap-8"
                 >
@@ -271,8 +317,9 @@ export default function HomePage() {
                     ↗
                   </span>
                 </Link>
+                </RevealItem>
               ))}
-            </div>
+            </RevealGroup>
           </div>
         </Container>
       </section>
@@ -280,10 +327,10 @@ export default function HomePage() {
       {/* CONTACT */}
       <section className="py-20 sm:py-28">
         <Container>
-          <div className="relative overflow-hidden rounded-md border border-[#1f1f1f] px-6 py-14 sm:px-12 sm:py-20 lg:px-16">
+          <Reveal className="relative overflow-hidden rounded-md border border-[#1f1f1f] px-6 py-14 sm:px-12 sm:py-20 lg:px-16">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#d00018]/10 blur-[100px]"
+              className="glow-breathe pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#d00018]/10 blur-[100px]"
             />
 
             <div className="relative max-w-3xl">
@@ -301,13 +348,15 @@ export default function HomePage() {
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center gap-3 rounded-full bg-[#d00018] px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-[#b60015]"
-                >
-                  Demander une collaboration
-                  <span aria-hidden="true">↗</span>
-                </Link>
+                <Magnetic className="flex">
+                  <Link
+                    href="/contact"
+                    className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-[#d00018] px-7 py-3.5 text-sm font-medium text-white transition-colors hover:bg-[#b60015]"
+                  >
+                    Demander une collaboration
+                    <span aria-hidden="true">↗</span>
+                  </Link>
+                </Magnetic>
 
                 <Link
                   href="/services"
@@ -317,7 +366,7 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-          </div>
+          </Reveal>
         </Container>
       </section>
     </>

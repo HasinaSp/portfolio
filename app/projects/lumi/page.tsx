@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ViewTransition } from "react";
+
+import ScrollProgress from "@/components/motion/ScrollProgress";
 
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
@@ -93,6 +96,8 @@ const technologies = [
 export default function LumiProjectPage() {
   return (
     <div className="overflow-hidden">
+      <ScrollProgress />
+
       {/* HERO */}
       <section className="relative border-b border-[#1f1f1f]">
         <div className="absolute inset-0 pointer-events-none">
@@ -158,13 +163,18 @@ export default function LumiProjectPage() {
         <Container>
           <div className="py-16 sm:py-24">
             <div className="relative aspect-[16/9] overflow-hidden rounded-2xl border border-[#242424] bg-[#0a0a0a]">
-              <Image
-                src="/projects/lumi/hero.png"
-                alt="Interface principale de LUMI"
-                fill
-                className="object-cover"
-                priority
-              />
+              <ViewTransition name="project-lumi" share="morph" default="none">
+                <div className="absolute inset-0">
+                  <Image
+                    src="/projects/lumi/hero.png"
+                    alt="Interface principale de LUMI"
+                    fill
+                    sizes="(max-width: 1280px) 100vw, 1280px"
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              </ViewTransition>
             </div>
 
             <p className="mt-4 text-xs text-neutral-600">
