@@ -41,6 +41,13 @@ model RateLimit {
   resetAt DateTime
 }
 
+// Réglages du site modifiables depuis l'admin (une seule ligne, id = 1).
+model SiteSettings {
+  id        Int      @id @default(1)
+  available Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
+
 enum ContactStatus {
   NEW
   CONTACTED

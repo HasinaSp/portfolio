@@ -13,7 +13,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 | `CONTACT_NOTIFY_TO` | Facultatif : destinataire de ces emails (par défaut `ADMIN_EMAIL`) |
 | `CONTACT_NOTIFY_FROM` | Facultatif : expéditeur, sur un domaine vérifié chez Resend (par défaut l'adresse de test Resend) |
 
-Contenu modifiable sans toucher aux pages : `data/projects.ts` (projets et études de cas), `data/testimonials.ts` (témoignages), `data/availability.ts` (badge de disponibilité).
+Contenu modifiable sans toucher aux pages : `data/projects.ts` (projets et études de cas), `data/testimonials.ts` (témoignages), `data/availability.ts` (textes du badge de disponibilité ; l'état disponible / planning complet se change depuis `/admin`).
 
 Migrations : `npx prisma migrate deploy`.
 
