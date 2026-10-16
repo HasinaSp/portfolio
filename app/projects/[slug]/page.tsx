@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
 
 import ScrollProgress from "@/components/motion/ScrollProgress";
+import CaseStudySections from "@/components/projects/CaseStudySections";
+import Testimonials from "@/components/testimonials/Testimonials";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import ProjectImage from "@/components/projects/ProjectImage";
@@ -229,6 +231,13 @@ export default async function ProjectDetailPage({
           </div>
         </Container>
       </Section>
+
+      <CaseStudySections caseStudy={project.caseStudy} />
+
+      <Testimonials
+        projectSlug={project.slug}
+        title={`Ce qu’en dit le client de ${project.title}.`}
+      />
 
       <Section className="border-t border-[#1f1f1f]">
         <Container>

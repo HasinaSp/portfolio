@@ -10,6 +10,8 @@ import ParallaxMedia from "@/components/motion/ParallaxMedia";
 import Marquee from "@/components/motion/Marquee";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import SplitWords from "@/components/motion/SplitWords";
+import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
+import Testimonials from "@/components/testimonials/Testimonials";
 
 // Bandeau défilant : technologies de tous les projets, sans doublon.
 const technologies = [...new Set(projects.flatMap((project) => project.technologies))];
@@ -69,6 +71,13 @@ export default function HomePage() {
 
         <Container>
           <div className="relative flex min-h-[calc(100svh-80px)] flex-col justify-center py-24 sm:py-32">
+            <div
+              className="enter-up mb-10"
+              style={{ "--delay": "0s" } as React.CSSProperties}
+            >
+              <AvailabilityBadge />
+            </div>
+
             <div className="mb-8 flex items-center gap-4">
               <span
                 className="draw-x h-px w-10 bg-[#d00018]"
@@ -267,6 +276,9 @@ export default function HomePage() {
           </div>
         </Container>
       </section>
+
+      {/* TÉMOIGNAGES (masqués tant que data/testimonials.ts est vide) */}
+      <Testimonials />
 
       {/* SERVICES */}
       <section className="border-b border-[#1f1f1f]">

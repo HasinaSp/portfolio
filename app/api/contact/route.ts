@@ -1,4 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
+
+import { notifyNewContactRequest } from "@/lib/notify-contact";
 
 import { prisma } from "@/lib/db";
 import { HONEYPOT_FIELD } from "@/lib/contact-options";
@@ -55,7 +57,7 @@ export async function POST(request: Request) {
 
   try {
     const data = result.data;
-    await prisma.contactRequest.create({
+    const created = await prisma.contactRequest.create({
       data: {
         name: data.name,
         email: data.email,
@@ -64,7 +66,11 @@ export async function POST(request: Request) {
         budget: data.budget ?? null,
         message: data.message,
       },
+      select: { id: true },
     });
+
+    // Email à l'admin après la réponse : le visiteur n'attend pas l'envoi.
+    after(() => notifyNewContactRequest(created.id, data));
 
     return reply(201, { success: true, message: SUCCESS_MESSAGE });
   } catch (error) {

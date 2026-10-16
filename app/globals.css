@@ -199,6 +199,19 @@ button {
   }
 }
 
+/* Pastille de disponibilité */
+.availability-ping {
+  animation: availability-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes availability-ping {
+  75%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
 /* Bandeau défilant (Marquee) */
 .marquee {
   overflow: hidden;
@@ -291,6 +304,7 @@ button {
   .enter-up,
   .draw-x,
   .glow-breathe,
+  .availability-ping,
   .marquee-track {
     animation: none;
   }

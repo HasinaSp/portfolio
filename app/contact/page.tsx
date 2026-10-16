@@ -4,6 +4,7 @@ import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import ContactForm from "@/components/contact/ContactForm";
 import { contact } from "@/lib/contact";
+import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -49,6 +50,8 @@ export default function ContactPage() {
               Une idée, un besoin ou un projet déjà bien défini ?
               Décrivez-moi ce que vous souhaitez construire.
             </p>
+
+            <AvailabilityBadge className="mt-10" />
           </div>
         </Container>
       </section>
