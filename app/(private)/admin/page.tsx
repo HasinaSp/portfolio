@@ -1,8 +1,10 @@
 import Link from "next/link";
 import type { ContactStatus, Prisma } from "@prisma/client";
 
+import AvailabilityControl from "@/components/admin/AvailabilityControl";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { requireAdmin } from "@/lib/admin";
+import { getAvailable } from "@/lib/availability";
 import {
   CONTACT_STATUSES,
   budgetLabel,
@@ -35,7 +37,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const page = Math.max(1, Number.parseInt(rawPage ?? "1", 10) || 1);
   const where: Prisma.ContactRequestWhereInput = status ? { status } : {};
 
-  const [counts, requests, filteredTotal] = await Promise.all([
+  const [counts, requests, filteredTotal, available] = await Promise.all([
     prisma.contactRequest.groupBy({ by: ["status"], _count: { _all: true } }),
     prisma.contactRequest.findMany({
       where,
@@ -55,6 +57,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       },
     }),
     prisma.contactRequest.count({ where }),
+    getAvailable(),
   ]);
 
   const countFor = (value: ContactStatus) =>
@@ -85,6 +88,8 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </p>
         </div>
       </div>
+
+      <AvailabilityControl available={available} acceptedCount={countFor("ACCEPTED")} />
 
       {supprimee && (
         <p

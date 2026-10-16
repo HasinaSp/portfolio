@@ -1,10 +1,11 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { signOut } from "@/auth";
 import { requireAdmin } from "@/lib/admin";
+import { AVAILABILITY_TAG, setAvailable } from "@/lib/availability";
 import { isContactStatus } from "@/lib/contact-requests";
 import { prisma } from "@/lib/db";
 
@@ -37,6 +38,21 @@ export async function deleteRequest(formData: FormData) {
 
   revalidatePath("/admin");
   redirect("/admin?supprimee=1");
+}
+
+export async function updateAvailability(formData: FormData) {
+  await requireAdmin();
+
+  const value = formData.get("available");
+  if (value !== "true" && value !== "false") {
+    throw new Error("Valeur invalide.");
+  }
+
+  await setAvailable(value === "true");
+
+  // Pages publiques (badge) régénérées à la prochaine visite.
+  updateTag(AVAILABILITY_TAG);
+  revalidatePath("/admin");
 }
 
 export async function logout() {

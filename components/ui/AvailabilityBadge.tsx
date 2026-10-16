@@ -1,15 +1,18 @@
 import { availability } from "@/data/availability";
+import { getAvailable } from "@/lib/availability";
 import type { Locale } from "@/lib/i18n";
 
 // Pastille de disponibilité (le point vert pulse ; arrêté si moins d'animations).
-export default function AvailabilityBadge({
+// L'état se règle depuis l'admin.
+export default async function AvailabilityBadge({
   lang,
   className = "",
 }: {
   lang: Locale;
   className?: string;
 }) {
-  const { available, label, detail, unavailableLabel } = availability;
+  const available = await getAvailable();
+  const { label, detail, unavailableLabel } = availability;
 
   return (
     <p
