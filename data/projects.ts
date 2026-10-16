@@ -83,6 +83,18 @@ export const projects: Project[] = [
     url: "https://couverture-vasseur-prod.vercel.app/",
 
     featured: true,
+
+    caseStudy: {
+      challenge:
+        "Un artisan couvreur doit être trouvé par les habitants de sa zone au moment où ils en ont besoin, souvent dans l'urgence, puis inspirer confiance assez vite pour qu'ils appellent ou demandent un devis.",
+      solution: [
+        "Des pages dédiées à chaque ville de la zone d'intervention, pour répondre aux recherches locales.",
+        "Les actions clés toujours à portée de main : appel direct, demande de devis gratuit et mention de l'urgence fuite 24h/24.",
+        "Les avis clients et les réalisations mis en avant pour rassurer dès les premières secondes.",
+        "Une structure claire des prestations : couverture, rénovation, réparation, zinguerie.",
+        "Un site rapide et responsive, pensé d'abord pour le mobile, là où se font les recherches urgentes.",
+      ],
+    },
   },
 
   {
@@ -121,6 +133,16 @@ export const projects: Project[] = [
     ],
 
     url: "https://fr.buildongroup.com/",
+
+    caseStudy: {
+      challenge:
+        "Présenter clairement une offre B2B large et technique (services BIM & CAD, dossiers réglementaires, construction clé en main) à des professionnels qui doivent comprendre rapidement ce que le groupe peut prendre en charge.",
+      solution: [
+        "Participation au développement des pages et des composants de la plateforme avec Next.js et TypeScript.",
+        "Intégration responsive des interfaces avec Tailwind CSS, pour une lecture fluide sur tous les écrans.",
+        "Contribution à la mise en ligne et au flux de déploiement de la plateforme.",
+      ],
+    },
   },
 
   {
@@ -162,6 +184,16 @@ export const projects: Project[] = [
     ],
 
     url: "https://app.danapay.io/login",
+
+    caseStudy: {
+      challenge:
+        "Dans une application financière, chaque écran doit être clair et fiable : l'utilisateur doit comprendre ce qu'il fait et avoir confiance dans chaque opération.",
+      solution: [
+        "Développement d'interfaces de l'application avec Vue.js et TypeScript.",
+        "Travail avec l'API Laravel, testée et documentée avec Postman.",
+        "Participation à l'automatisation de tâches pour fiabiliser certains traitements.",
+      ],
+    },
   },
 
   {
@@ -201,5 +233,16 @@ export const projects: Project[] = [
       "/projects/cci-var/image-4.jpeg",
       "/projects/cci-var/image-5.jpeg",
     ],
+
+    caseStudy: {
+      challenge:
+        "Faire évoluer un projet digital dans un contexte institutionnel, où plusieurs outils doivent fonctionner ensemble de façon fiable : gestion de contenu, interface web et production de documents.",
+      solution: [
+        "Développement de parties de l'interface avec Next.js, TypeScript et Tailwind CSS.",
+        "Intégration avec WordPress pour la gestion du contenu.",
+        "Génération de documents PDF avec Gotenberg.",
+        "Environnement conteneurisé avec Docker et base de données MySQL.",
+      ],
+    },
   },
 ];
