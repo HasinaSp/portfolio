@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import AdminBar from "@/components/admin/AdminBar";
+import Container from "@/components/ui/Container";
 import { requireAdmin } from "@/lib/admin";
 
 export const metadata: Metadata = {
@@ -12,7 +14,12 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await requireAdmin();
+  const session = await requireAdmin();
 
-  return children;
+  return (
+    <Container className="py-10 sm:py-14">
+      <AdminBar email={session.user?.email} />
+      <div className="mt-10">{children}</div>
+    </Container>
+  );
 }
