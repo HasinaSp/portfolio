@@ -4,8 +4,23 @@ import Link from "next/link";
 import Container from "@/components/ui/Container";
 import ProjectCard from "@/components/projects/ProjectCard";
 import { projects } from "@/data/projects";
+import { contact } from "@/lib/contact";
 
 const featuredProjects = projects.filter((project) => project.featured);
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Andriamahandry Hasiniavo",
+  alternateName: "Hasina",
+  url: siteUrl,
+  image: `${siteUrl}/about/profile.jpeg`,
+  jobTitle: "Développeur web & créateur digital",
+  sameAs: [contact.linkedin.url],
+  knowsAbout: ["Développement web", "Next.js", "TypeScript", "UI/UX design", "SaaS"],
+};
 
 const services = [
   {
@@ -30,7 +45,13 @@ const services = [
 
 export default function HomePage() {
   return (
-    <main>
+    <>
+      <script
+        type="application/ld+json"
+        // Données structurées (Google) : identité et compétences.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
+      />
+
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-[#1f1f1f]">
         <div
@@ -299,6 +320,6 @@ export default function HomePage() {
           </div>
         </Container>
       </section>
-    </main>
+    </>
   );
 }

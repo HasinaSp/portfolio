@@ -20,7 +20,7 @@ export default async function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-[calc(100vh-80px)] items-center justify-center px-5 py-16">
+    <div className="flex min-h-[calc(100vh-80px)] items-center justify-center px-5 py-16">
       <div className="w-full max-w-md">
         <div className="mb-10 text-center">
           <p className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-[#d00018]">
@@ -44,6 +44,6 @@ export default async function LoginPage() {
           Accès réservé à l’administrateur.
         </p>
       </div>
-    </main>
+    </div>
   );
 }
