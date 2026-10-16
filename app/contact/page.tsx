@@ -65,7 +65,7 @@ export default function ContactPage() {
 
               <h2 className="mt-6 text-3xl font-medium tracking-[-0.04em] sm:text-5xl">
                 Construisons quelque chose
-                <span className="text-neutral-500"> d'utile.</span>
+                <span className="text-neutral-500"> d’utile.</span>
               </h2>
 
               <p className="mt-8 max-w-md text-base leading-8 text-neutral-500">

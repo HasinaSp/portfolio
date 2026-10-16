@@ -202,7 +202,7 @@ export default function LumiProjectPage() {
               </p>
 
               <p>
-                L'objectif n'est pas simplement de produire des données, mais
+                L’objectif n’est pas simplement de produire des données, mais
                 de transformer ces données en recommandations concrètes.
               </p>
             </div>
@@ -225,7 +225,7 @@ export default function LumiProjectPage() {
 
               <p className="mt-6 text-base leading-7 text-neutral-500 sm:text-lg">
                 LUMI rassemble plusieurs dimensions essentielles de la
-                performance digitale d'un restaurant dans une expérience
+                performance digitale d’un restaurant dans une expérience
                 simple et structurée.
               </p>
             </div>
@@ -268,7 +268,7 @@ export default function LumiProjectPage() {
               </h2>
 
               <p className="mt-6 max-w-xl text-base leading-7 text-neutral-500 sm:text-lg">
-                Chaque audit produit un score global sur 100 accompagné d'une
+                Chaque audit produit un score global sur 100 accompagné d’une
                 analyse détaillée. Le restaurateur peut ainsi identifier
                 rapidement ses priorités.
               </p>
@@ -347,7 +347,7 @@ export default function LumiProjectPage() {
               </h2>
 
               <p className="mt-6 max-w-md text-base leading-7 text-neutral-500">
-                LUMI analyse la lumière, la netteté, le cadrage, l'appétence,
+                LUMI analyse la lumière, la netteté, le cadrage, l’appétence,
                 la cohérence et le potentiel de conversion des photos de plats.
               </p>
             </div>
@@ -400,7 +400,7 @@ export default function LumiProjectPage() {
             </p>
 
             <h2 className="mt-5 text-3xl font-semibold tracking-tight sm:text-5xl">
-              De l'analyse à l'action.
+              De l’analyse à l’action.
             </h2>
           </div>
 
@@ -525,9 +525,9 @@ export default function LumiProjectPage() {
               </h2>
 
               <p className="mt-6 max-w-xl text-base leading-7 text-neutral-500 sm:text-lg">
-                L'architecture de LUMI sépare clairement l'interface,
+                L’architecture de LUMI sépare clairement l’interface,
                 la logique métier et la persistance des données afin de
-                permettre au produit d'évoluer vers une véritable plateforme
+                permettre au produit d’évoluer vers une véritable plateforme
                 SaaS.
               </p>
             </div>
@@ -549,7 +549,7 @@ export default function LumiProjectPage() {
                   Le frontend repose sur Next.js et TypeScript. Le backend
                   NestJS est prévu pour centraliser la logique métier, les
                   API et les traitements liés aux audits. PostgreSQL et Prisma
-                  assurent la gestion et l'accès aux données.
+                  assurent la gestion et l’accès aux données.
                 </p>
               </div>
             </div>
@@ -570,9 +570,9 @@ export default function LumiProjectPage() {
             </h2>
 
             <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-neutral-500">
-              LUMI est un exemple de produit conçu autour d'un problème réel,
+              LUMI est un exemple de produit conçu autour d’un problème réel,
               avec une expérience simple et une architecture capable
-              d'évoluer.
+              d’évoluer.
             </p>
 
             <div className="mt-10 flex justify-center gap-4">

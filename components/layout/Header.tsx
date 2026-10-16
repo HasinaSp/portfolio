@@ -13,14 +13,13 @@ const navigation = [
 ];
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  // Le menu est ouvert pour une page donnée : il se referme de lui-même
+  // quand la page change, sans effet ni rendu supplémentaire.
+  const [openOn, setOpenOn] = useState<string | null>(null);
+  const isOpen = openOn === pathname;
 
-  const closeMenu = () => setIsOpen(false);
-
-  useEffect(() => {
-    closeMenu();
-  }, [pathname]);
+  const closeMenu = () => setOpenOn(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -105,7 +104,7 @@ export default function Header() {
           {/* BOUTON MOBILE */}
           <button
             type="button"
-            onClick={() => setIsOpen((previous) => !previous)}
+            onClick={() => setOpenOn(isOpen ? null : pathname)}
             aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={isOpen}
             aria-controls="mobile-navigation"

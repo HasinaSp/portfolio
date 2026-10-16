@@ -134,7 +134,7 @@ export default async function ServicePage({
             <div>
               <p className="text-base leading-8 text-neutral-500 sm:text-lg">
                 Chaque projet commence par la compréhension du
-                besoin. L'objectif est de construire une solution
+                besoin. L’objectif est de construire une solution
                 claire, cohérente et adaptée à votre contexte.
               </p>
 

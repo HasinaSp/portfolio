@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { services } from "@/data/services";
+import { HONEYPOT_FIELD, budgetOptions } from "@/lib/contact-options";
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,6 +28,7 @@ export default function ContactForm() {
       service: formData.get("service"),
       budget: formData.get("budget"),
       message: formData.get("message"),
+      [HONEYPOT_FIELD]: formData.get(HONEYPOT_FIELD),
     };
 
     try {
@@ -88,6 +90,19 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
+      {/* Piège à robots : invisible et hors de la navigation clavier. */}
+      <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
+        <label htmlFor={HONEYPOT_FIELD}>Ne pas remplir ce champ</label>
+        <input
+          id={HONEYPOT_FIELD}
+          name={HONEYPOT_FIELD}
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          defaultValue=""
+        />
+      </div>
+
       {/* Nom et e-mail */}
       <div className="grid gap-7 sm:grid-cols-2">
         <div>
@@ -189,12 +204,11 @@ export default function ContactForm() {
             Sélectionner une fourchette
           </option>
 
-          <option value="under-500">Moins de 500 €</option>
-          <option value="500-1000">500 € – 1 000 €</option>
-          <option value="1000-2500">1 000 € – 2 500 €</option>
-          <option value="2500-5000">2 500 € – 5 000 €</option>
-          <option value="5000-plus">Plus de 5 000 €</option>
-          <option value="not-defined">Je ne sais pas encore</option>
+          {budgetOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
       </div>
 

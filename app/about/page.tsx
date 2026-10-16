@@ -149,7 +149,7 @@ export default function AboutPage() {
                 </p>
 
                 <p>
-                  J'aime partir d'une idée parfois simple ou encore
+                  J’aime partir d’une idée parfois simple ou encore
                   incomplète, la structurer, imaginer son expérience puis
                   la transformer en une solution concrète.
                 </p>
@@ -194,7 +194,7 @@ export default function AboutPage() {
                 Trois étapes pour passer
                 <span className="text-neutral-500">
                   {" "}
-                  de l'idée au produit.
+                  de l’idée au produit.
                 </span>
               </h2>
             </div>
@@ -246,7 +246,7 @@ export default function AboutPage() {
 
             <div>
               <p className="max-w-2xl text-base leading-8 text-neutral-500 sm:text-lg">
-                J'utilise des technologies modernes pour concevoir des
+                J’utilise des technologies modernes pour concevoir des
                 expériences rapides, maintenables et adaptées aux besoins
                 de chaque projet.
               </p>
@@ -293,7 +293,7 @@ export default function AboutPage() {
                   href="/projects/lumi"
                   className="group inline-flex items-center gap-3 rounded-full bg-[#d00018] px-7 py-3.5 text-sm font-medium text-white transition-all duration-300 hover:bg-[#b60015] hover:shadow-[0_0_35px_rgba(208,0,24,0.18)]"
                 >
-                  <span>Voir l'étude de cas</span>
+                  <span>Voir l’étude de cas</span>
 
                   <span className="transition-transform duration-300 group-hover:translate-x-1">
                     →

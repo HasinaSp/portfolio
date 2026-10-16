@@ -11,7 +11,7 @@ export default function AdminPage() {
         </h1>
 
         <p className="mt-3 text-sm text-neutral-500">
-          Espace d'administration en cours de construction.
+          Espace d’administration en cours de construction.
         </p>
       </div>
     </main>
