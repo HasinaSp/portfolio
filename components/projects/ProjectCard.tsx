@@ -1,37 +1,55 @@
 import Link from "next/link";
+import { ViewTransition } from "react";
 
+import ParallaxMedia from "@/components/motion/ParallaxMedia";
 import ProjectImage from "@/components/projects/ProjectImage";
+import { localePath, type Locale } from "@/lib/i18n";
+import { uiText } from "@/lib/ui-text";
 import type { Project } from "@/types/project";
 
 interface ProjectCardProps {
   project: Project;
+  lang: Locale;
 }
 
 export default function ProjectCard({
   project,
+  lang,
 }: ProjectCardProps) {
+  const t = uiText[lang].project;
+  const href = localePath(lang, `/projects/${project.slug}`);
+
   return (
     <article className="group">
       <Link
-        href={`/projects/${project.slug}`}
+        href={href}
         className="block"
-        aria-label={`Découvrir le projet ${project.title}`}
+        aria-label={`${t.discover} ${project.title}`}
       >
         <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#1f1f1f] bg-[#0a0a0a]">
-            <ProjectImage
-                src={project.image}
-                alt={`Aperçu du projet ${project.title}`}
-                title={project.title}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                className="transition-transform duration-700 group-hover:scale-[1.02]"
+          {/* Même nom que l'image principale de la page projet : la vignette
+              s'y transforme à la navigation (View Transitions). */}
+          <ViewTransition name={`project-${project.slug}`} share="morph" default="none">
+            <div className="absolute inset-0">
+              <ParallaxMedia distance={5}>
+                <ProjectImage
+                  src={project.image}
+                  alt={`${t.previewAlt} ${project.title}`}
+                  title={project.title}
+                  lang={lang}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                  className="transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                 />
+              </ParallaxMedia>
+            </div>
+          </ViewTransition>
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-70 transition-opacity duration-500 group-hover:opacity-90" />
 
           <span className="absolute left-5 top-5 rounded-full border border-white/15 bg-black/60 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.16em] text-white backdrop-blur-md">
             {project.type === "personal"
-              ? "Projet personnel"
-              : "Contribution"}
+              ? t.personal
+              : t.contribution}
           </span>
 
           <span className="absolute bottom-5 right-5 flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-black/40 text-white transition-all duration-300 group-hover:border-[#d00018] group-hover:bg-[#d00018]">
@@ -65,7 +83,7 @@ export default function ProjectCard({
           </span>
         </div>
 
-        <Link href={`/projects/${project.slug}`}>
+        <Link href={href}>
           <h2 className="mt-3 text-2xl font-medium tracking-tight text-white transition-colors duration-300 group-hover:text-[#d00018] sm:text-3xl">
             {project.title}
           </h2>

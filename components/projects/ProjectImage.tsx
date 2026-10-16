@@ -3,10 +3,14 @@
 import Image from "next/image";
 import { useState } from "react";
 
+import type { Locale } from "@/lib/i18n";
+import { uiText } from "@/lib/ui-text";
+
 interface ProjectImageProps {
   src: string;
   alt: string;
   title: string;
+  lang: Locale;
   className?: string;
   sizes?: string;
   priority?: boolean;
@@ -16,6 +20,7 @@ export default function ProjectImage({
   src,
   alt,
   title,
+  lang,
   className = "",
   sizes = "100vw",
   priority = false,
@@ -54,13 +59,13 @@ export default function ProjectImage({
           <div className="relative flex items-center gap-3">
             <span className="h-2 w-2 rounded-full bg-[#d00018]" />
             <span className="text-[10px] uppercase tracking-[0.22em] text-neutral-500">
-              Portfolio · Aperçu
+              {uiText[lang].project.fallbackEyebrow}
             </span>
           </div>
 
           <div className="relative">
             <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
-              Projet digital
+              {uiText[lang].project.fallbackLabel}
             </p>
 
             <p className="mt-3 max-w-full break-words text-3xl font-medium tracking-tight text-white sm:text-5xl">

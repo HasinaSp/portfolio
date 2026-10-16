@@ -27,6 +27,18 @@ model ContactRequest {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Liste de l'admin : filtre par statut, plus récentes d'abord.
+  @@index([status, createdAt])
+  @@index([createdAt])
+}
+
+// Limitation de débit partagée entre les instances serverless
+// (formulaire de contact, tentatives de connexion).
+model RateLimit {
+  key     String   @id
+  count   Int
+  resetAt DateTime
 }
 
 enum ContactStatus {

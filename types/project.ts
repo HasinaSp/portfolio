@@ -1,5 +1,18 @@
 export type ProjectType = "personal" | "contribution";
 
+/*
+ * Étude de cas d'un projet. Chaque partie est facultative : seules les
+ * parties renseignées sont affichées sur la page du projet.
+ */
+export interface CaseStudy {
+  // Le défi : le problème ou le besoin de départ.
+  challenge?: string;
+  // La solution : les étapes ou choix clés, une phrase par élément.
+  solution?: string[];
+  // Les résultats : uniquement des chiffres réels et vérifiables.
+  results?: { value: string; label: string }[];
+}
+
 export interface Project {
   slug: string;
   number: string;
@@ -22,4 +35,6 @@ export interface Project {
   url?: string;
 
   featured?: boolean;
+
+  caseStudy?: CaseStudy;
 }
