@@ -1,7 +1,14 @@
 import { availability } from "@/data/availability";
+import type { Locale } from "@/lib/i18n";
 
 // Pastille de disponibilité (le point vert pulse ; arrêté si moins d'animations).
-export default function AvailabilityBadge({ className = "" }: { className?: string }) {
+export default function AvailabilityBadge({
+  lang,
+  className = "",
+}: {
+  lang: Locale;
+  className?: string;
+}) {
   const { available, label, detail, unavailableLabel } = availability;
 
   return (
@@ -17,8 +24,8 @@ export default function AvailabilityBadge({ className = "" }: { className?: stri
         />
       </span>
       <span>
-        {available ? label : unavailableLabel}
-        {available && detail && <span className="text-neutral-500"> · {detail}</span>}
+        {available ? label[lang] : unavailableLabel[lang]}
+        {available && detail && <span className="text-neutral-500"> · {detail[lang]}</span>}
       </span>
     </p>
   );

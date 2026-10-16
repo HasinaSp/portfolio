@@ -1,14 +1,23 @@
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
+import type { Locale } from "@/lib/i18n";
+import { uiText } from "@/lib/ui-text";
 import type { CaseStudy } from "@/types/project";
 
 /*
  * Étude de cas : défi → solution → résultats. Chaque partie n'est affichée
  * que si elle est renseignée dans data/projects.ts.
  */
-export default function CaseStudySections({ caseStudy }: { caseStudy?: CaseStudy }) {
+export default function CaseStudySections({
+  caseStudy,
+  lang,
+}: {
+  caseStudy?: CaseStudy;
+  lang: Locale;
+}) {
   if (!caseStudy) return null;
+  const t = uiText[lang].project;
 
   const { challenge, solution = [], results = [] } = caseStudy;
   if (!challenge && solution.length === 0 && results.length === 0) return null;
@@ -20,7 +29,7 @@ export default function CaseStudySections({ caseStudy }: { caseStudy?: CaseStudy
           {challenge && (
             <Reveal className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
               <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
-                Le défi
+                {t.challenge}
               </p>
               <p className="text-balance text-2xl font-medium leading-snug tracking-[-0.03em] text-white sm:text-3xl lg:text-4xl">
                 {challenge}
@@ -32,7 +41,7 @@ export default function CaseStudySections({ caseStudy }: { caseStudy?: CaseStudy
             <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
               <Reveal>
                 <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
-                  La solution
+                  {t.solution}
                 </p>
               </Reveal>
               <RevealGroup as="ul" className="divide-y divide-[#1f1f1f] border-y border-[#1f1f1f]">
@@ -52,7 +61,7 @@ export default function CaseStudySections({ caseStudy }: { caseStudy?: CaseStudy
             <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
               <Reveal>
                 <p className="text-xs font-medium uppercase tracking-[0.22em] text-[#d00018]">
-                  Les résultats
+                  {t.results}
                 </p>
               </Reveal>
               <RevealGroup as="ul" className="grid gap-px overflow-hidden rounded-2xl border border-[#1f1f1f] bg-[#1f1f1f] sm:grid-cols-2">

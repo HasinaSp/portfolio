@@ -17,6 +17,12 @@ Contenu modifiable sans toucher aux pages : `data/projects.ts` (projets et étud
 
 Migrations : `npx prisma migrate deploy`.
 
+## Langues (FR / EN)
+
+- Le français est servi à la racine (`/projects`), l'anglais sous `/en` (`/en/projects`). `proxy.ts` réécrit les URL françaises vers `app/[lang]` ; l'admin (`app/(private)`) reste en français.
+- Les textes d'une page sont dans un objet `content = { fr, en }` en haut de la page ; les textes communs (en-tête, pied de page, cartes) dans `lib/ui-text.ts` ; projets et services dans `data/` (champs `{ fr, en }`).
+- Liens internes : toujours `localePath(lang, "/chemin")` (`lib/i18n.ts`).
+
 ## Getting Started
 
 First, run the development server:

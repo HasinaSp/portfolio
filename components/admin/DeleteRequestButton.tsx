@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 
-import { deleteRequest } from "@/app/admin/actions";
+import { deleteRequest } from "@/app/(private)/admin/actions";
 
 function ConfirmButton() {
   const { pending } = useFormStatus();

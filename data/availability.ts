@@ -4,9 +4,16 @@
  */
 export const availability = {
   available: true,
-  label: "Disponible pour de nouveaux projets",
-  // Facultatif, par ex. « Démarrage possible en novembre ». null = masqué.
-  detail: null as string | null,
+  label: {
+    fr: "Disponible pour de nouveaux projets",
+    en: "Available for new projects",
+  },
+  // Facultatif, par ex. { fr: "Démarrage possible en novembre", en: "Can start in November" }.
+  // null = masqué.
+  detail: null as { fr: string; en: string } | null,
   // Affiché quand available vaut false.
-  unavailableLabel: "Planning complet pour le moment",
+  unavailableLabel: {
+    fr: "Planning complet pour le moment",
+    en: "Fully booked for now",
+  },
 };

@@ -1,25 +1,130 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import ContactForm from "@/components/contact/ContactForm";
 import { contact } from "@/lib/contact";
 import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
+import {
+  hasLocale,
+  languageAlternates,
+  ogLocale,
+  type Localized,
+} from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Parlons de votre projet digital. Décrivez votre besoin et recevez une réponse adaptée.",
-  alternates: {
-    canonical: "/contact",
+type PageProps = {
+  params: Promise<{ lang: string }>;
+};
+
+const content: Localized<{
+  metaTitle: string;
+  metaDescription: string;
+  eyebrow: string;
+  titleLine1: string;
+  titleLine2: string;
+  intro: string;
+  startLabel: string;
+  startTitle: string;
+  startTitleAccent: string;
+  startText: string;
+  emailLabel: string;
+  emailSubject: string;
+  whatsappMessage: string;
+  whatsappAriaLabel: string;
+  linkedinAriaLabel: string;
+  linkedinDetail: string;
+  responseLabel: string;
+  responseText: string;
+  formEyebrow: string;
+  formTitle: string;
+  formText: string;
+}> = {
+  fr: {
+    metaTitle: "Contact",
+    metaDescription:
+      "Parlons de votre projet digital. Décrivez votre besoin et recevez une réponse adaptée.",
+    eyebrow: "Contact",
+    titleLine1: "Parlons de votre",
+    titleLine2: "prochain projet.",
+    intro:
+      "Une idée, un besoin ou un projet déjà bien défini ? Décrivez-moi ce que vous souhaitez construire.",
+    startLabel: "Démarrer",
+    startTitle: "Construisons quelque chose",
+    startTitleAccent: " d’utile.",
+    startText:
+      "Quelques informations suffisent pour commencer. Choisissez le moyen de contact qui vous convient ou décrivez directement votre projet dans le formulaire.",
+    emailLabel: "E-mail",
+    emailSubject: contact.email.subject,
+    whatsappMessage:
+      "Bonjour Hasina, je vous contacte depuis votre portfolio pour discuter d'un projet.",
+    whatsappAriaLabel: "Me contacter sur WhatsApp (nouvel onglet)",
+    linkedinAriaLabel: "Voir mon profil LinkedIn (nouvel onglet)",
+    linkedinDetail: "Profil professionnel",
+    responseLabel: "Délai de réponse estimé :",
+    responseText: "généralement sous 24 à 48 heures.",
+    formEyebrow: "Votre projet",
+    formTitle: "Parlez-moi de votre idée.",
+    formText:
+      "Remplissez le formulaire ci-dessous. Les informations fournies me permettront de mieux comprendre votre demande.",
   },
-  robots: {
-    index: true,
-    follow: true,
+  en: {
+    metaTitle: "Contact",
+    metaDescription:
+      "Let’s talk about your digital project. Describe what you need and get a tailored reply.",
+    eyebrow: "Contact",
+    titleLine1: "Let’s talk about your",
+    titleLine2: "next project.",
+    intro:
+      "An idea, a need or a project that’s already well defined? Tell me what you want to build.",
+    startLabel: "Get started",
+    startTitle: "Let’s build something",
+    startTitleAccent: " useful.",
+    startText:
+      "A few details are enough to get started. Pick the contact method that suits you, or describe your project directly in the form.",
+    emailLabel: "Email",
+    emailSubject: "Collaboration request",
+    whatsappMessage:
+      "Hello Hasina, I’m reaching out from your portfolio to discuss a project.",
+    whatsappAriaLabel: "Contact me on WhatsApp (opens in a new tab)",
+    linkedinAriaLabel: "View my LinkedIn profile (opens in a new tab)",
+    linkedinDetail: "Professional profile",
+    responseLabel: "Estimated response time:",
+    responseText: "usually within 24 to 48 hours.",
+    formEyebrow: "Your project",
+    formTitle: "Tell me about your idea.",
+    formText:
+      "Fill in the form below. The information you provide will help me better understand your request.",
   },
 };
 
-export default function ContactPage() {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+
+  const t = content[lang];
+
+  return {
+    title: t.metaTitle,
+    description: t.metaDescription,
+    alternates: languageAlternates(lang, "/contact"),
+    openGraph: {
+      locale: ogLocale[lang],
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
+
+export default async function ContactPage({ params }: PageProps) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+
+  const t = content[lang];
+  const whatsappUrl = `https://wa.me/${contact.whatsapp.number}?text=${encodeURIComponent(t.whatsappMessage)}`;
+
   return (
     <div className="overflow-hidden">
       {/* HERO */}
@@ -34,24 +139,23 @@ export default function ContactPage() {
             <div className="flex items-center gap-4">
               <span className="h-px w-10 bg-[#d00018]" />
               <p className="text-xs font-medium uppercase tracking-[0.25em] text-neutral-500">
-                Contact
+                {t.eyebrow}
               </p>
             </div>
 
             <h1 className="mt-10 max-w-5xl text-balance text-[clamp(3.5rem,8vw,8rem)] font-semibold leading-[0.92] tracking-[-0.055em]">
-              Parlons de votre
+              {t.titleLine1}
               <br />
               <span className="text-neutral-500">
-                prochain projet.
+                {t.titleLine2}
               </span>
             </h1>
 
             <p className="mt-12 max-w-2xl text-pretty text-lg leading-8 text-neutral-400 sm:text-xl">
-              Une idée, un besoin ou un projet déjà bien défini ?
-              Décrivez-moi ce que vous souhaitez construire.
+              {t.intro}
             </p>
 
-            <AvailabilityBadge className="mt-10" />
+            <AvailabilityBadge lang={lang} className="mt-10" />
           </div>
         </Container>
       </section>
@@ -63,25 +167,23 @@ export default function ContactPage() {
             {/* Informations */}
             <div>
               <p className="text-xs font-medium uppercase tracking-[0.25em] text-[#d00018]">
-                Démarrer
+                {t.startLabel}
               </p>
 
               <h2 className="mt-6 text-3xl font-medium tracking-[-0.04em] sm:text-5xl">
-                Construisons quelque chose
-                <span className="text-neutral-500"> d’utile.</span>
+                {t.startTitle}
+                <span className="text-neutral-500">{t.startTitleAccent}</span>
               </h2>
 
               <p className="mt-8 max-w-md text-base leading-8 text-neutral-500">
-                Quelques informations suffisent pour commencer.
-                Choisissez le moyen de contact qui vous convient
-                ou décrivez directement votre projet dans le formulaire.
+                {t.startText}
               </p>
 
               {/* Coordonnées */}
               <div className="mt-12 border-t border-[#1f1f1f]">
                 {/* Email */}
                 <a
-                  href={`mailto:${contact.email.address}?subject=${encodeURIComponent(contact.email.subject)}`}
+                  href={`mailto:${contact.email.address}?subject=${encodeURIComponent(t.emailSubject)}`}
                   className="group flex items-center justify-between gap-4 border-b border-[#1f1f1f] py-5"
                 >
                   <div className="flex min-w-0 items-center gap-4">
@@ -101,7 +203,7 @@ export default function ContactPage() {
 
                     <span className="flex min-w-0 flex-col gap-1.5">
                       <span className="text-sm font-medium text-white">
-                        E-mail
+                        {t.emailLabel}
                       </span>
                       <span className="break-all text-sm text-neutral-500 transition-colors group-hover:text-neutral-300">
                         {contact.email.address}
@@ -119,10 +221,10 @@ export default function ContactPage() {
 
                 {/* WhatsApp */}
                 <a
-                  href={contact.whatsapp.url}
+                  href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Me contacter sur WhatsApp (nouvel onglet)"
+                  aria-label={t.whatsappAriaLabel}
                   className="group flex items-center justify-between gap-4 border-b border-[#1f1f1f] py-5"
                 >
                   <div className="flex items-center gap-4">
@@ -160,7 +262,7 @@ export default function ContactPage() {
                   href={contact.linkedin.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Voir mon profil LinkedIn (nouvel onglet)"
+                  aria-label={t.linkedinAriaLabel}
                   className="group flex items-center justify-between gap-4 border-b border-[#1f1f1f] py-5"
                 >
                   <div className="flex items-center gap-4">
@@ -180,7 +282,7 @@ export default function ContactPage() {
                         LinkedIn
                       </span>
                       <span className="text-sm text-neutral-500 transition-colors group-hover:text-neutral-300">
-                        Profil professionnel
+                        {t.linkedinDetail}
                       </span>
                     </span>
                   </div>
@@ -202,9 +304,9 @@ export default function ContactPage() {
                 />
                 <p className="text-sm leading-6 text-neutral-500">
                   <span className="text-neutral-300">
-                    Délai de réponse estimé :
+                    {t.responseLabel}
                   </span>{" "}
-                  généralement sous 24 à 48 heures.
+                  {t.responseText}
                 </p>
               </div>
             </div>
@@ -218,20 +320,19 @@ export default function ContactPage() {
 
               <div className="mb-8">
                 <p className="text-xs font-medium uppercase tracking-[0.2em] text-neutral-500">
-                  Votre projet
+                  {t.formEyebrow}
                 </p>
 
                 <h3 className="mt-3 text-2xl font-medium tracking-[-0.04em] text-white sm:text-3xl">
-                  Parlez-moi de votre idée.
+                  {t.formTitle}
                 </h3>
 
                 <p className="mt-3 text-sm leading-6 text-neutral-500">
-                  Remplissez le formulaire ci-dessous. Les informations
-                  fournies me permettront de mieux comprendre votre demande.
+                  {t.formText}
                 </p>
               </div>
 
-              <ContactForm />
+              <ContactForm lang={lang} />
             </div>
           </div>
         </Container>

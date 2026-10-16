@@ -1,8 +1,21 @@
 import Link from "next/link";
 import Container from "@/components/ui/Container";
 import { contact } from "@/lib/contact";
+import { localePath, type Locale } from "@/lib/i18n";
+import { uiText } from "@/lib/ui-text";
 
-export default function Footer() {
+export default function Footer({ lang }: { lang: Locale }) {
+  const t = uiText[lang].footer;
+  const nav = uiText[lang].nav;
+  const href = (path: string) => localePath(lang, path);
+  const links = [
+    { label: nav.home, path: "/" },
+    { label: nav.projects, path: "/projects" },
+    { label: nav.services, path: "/services" },
+    { label: nav.about, path: "/about" },
+    { label: nav.contact, path: "/contact" },
+  ];
+
   return (
     <footer className="border-t border-[#1f1f1f] bg-black">
       <Container>
@@ -10,8 +23,8 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Link
-              href="/"
-              aria-label="Andriamahandry Hasiniavo — Accueil"
+              href={href("/")}
+              aria-label={`Andriamahandry Hasiniavo — ${nav.home}`}
               className="inline-flex items-center gap-3"
             >
               <span
@@ -25,72 +38,45 @@ export default function Footer() {
             </Link>
 
             <p className="mt-5 max-w-sm text-sm leading-7 text-neutral-500">
-              Création de solutions digitales modernes, élégantes et pensées
-              pour répondre à des besoins réels.
+              {t.tagline}
             </p>
 
             <Link
-              href="/contact"
+              href={href("/contact")}
               className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white transition-colors hover:text-[#d00018]"
             >
-              Parlons de votre projet
+              {t.talk}
               <span aria-hidden="true">↗</span>
             </Link>
           </div>
 
           {/* Navigation */}
-          <nav aria-label="Navigation du pied de page">
+          <nav aria-label={nav.footer}>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
-              Navigation
+              {t.navigation}
             </p>
 
             <div className="mt-5 flex flex-col items-start gap-4">
-              <Link
-                href="/"
-                className="text-sm text-neutral-400 transition-colors hover:text-white"
-              >
-                Accueil
-              </Link>
-
-              <Link
-                href="/projects"
-                className="text-sm text-neutral-400 transition-colors hover:text-white"
-              >
-                Projets
-              </Link>
-
-              <Link
-                href="/services"
-                className="text-sm text-neutral-400 transition-colors hover:text-white"
-              >
-                Services
-              </Link>
-
-              <Link
-                href="/about"
-                className="text-sm text-neutral-400 transition-colors hover:text-white"
-              >
-                À propos
-              </Link>
-
-              <Link
-                href="/contact"
-                className="text-sm text-neutral-400 transition-colors hover:text-white"
-              >
-                Contact
-              </Link>
+              {links.map((link) => (
+                <Link
+                  key={link.path}
+                  href={href(link.path)}
+                  className="text-sm text-neutral-400 transition-colors hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </nav>
 
           {/* Contact */}
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-500">
-              Restons en contact
+              {t.stayInTouch}
             </p>
 
             <p className="mt-5 max-w-xs text-sm leading-6 text-neutral-500">
-              Vous avez un projet en tête ou souhaitez collaborer ?
-              Contactez-moi directement.
+              {t.stayInTouchText}
             </p>
 
             <div className="mt-6 flex flex-col gap-4">
@@ -99,7 +85,7 @@ export default function Footer() {
                 href={contact.whatsapp.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Me contacter sur WhatsApp (nouvel onglet)"
+                aria-label={t.whatsappLabel}
                 className="group inline-flex items-center gap-3 text-sm text-neutral-300 transition-colors hover:text-white"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#252525] text-[#25D366] transition-all group-hover:border-[#25D366]/50 group-hover:bg-[#25D366]/10">
@@ -128,7 +114,7 @@ export default function Footer() {
               {/* Email */}
               <a
                 href={`mailto:${contact.email.address}?subject=${encodeURIComponent(contact.email.subject)}`}
-                aria-label="M'envoyer un e-mail"
+                aria-label={t.emailLabel}
                 className="group inline-flex items-center gap-3 text-sm text-neutral-300 transition-colors hover:text-white"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#252525] text-neutral-400 transition-all group-hover:border-[#d00018]/50 group-hover:text-[#d00018]">
@@ -146,7 +132,7 @@ export default function Footer() {
                 </span>
 
                 <span className="flex min-w-0 flex-col gap-1">
-                  <span className="font-medium">E-mail</span>
+                  <span className="font-medium">{t.email}</span>
                   <span className="break-all text-xs text-neutral-500">
                     {contact.email.address}
                   </span>
@@ -162,7 +148,7 @@ export default function Footer() {
                 href={contact.linkedin.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Voir mon profil LinkedIn (nouvel onglet)"
+                aria-label={t.linkedinLabel}
                 className="group inline-flex items-center gap-3 text-sm text-neutral-300 transition-colors hover:text-white"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#252525] text-neutral-400 transition-all group-hover:border-[#0A66C2]/50 group-hover:text-[#0A66C2]">
@@ -179,7 +165,7 @@ export default function Footer() {
                 <span className="flex flex-col gap-1">
                   <span className="font-medium">LinkedIn</span>
                   <span className="text-xs text-neutral-500">
-                    Profil professionnel
+                    {t.linkedinDetail}
                   </span>
                 </span>
 
@@ -194,11 +180,10 @@ export default function Footer() {
         {/* Bottom */}
         <div className="flex flex-col gap-4 border-t border-[#1f1f1f] py-8 text-xs text-neutral-600 sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {new Date().getFullYear()} Andriamahandry Hasiniavo. Tous droits
-            réservés.
+            © {new Date().getFullYear()} Andriamahandry Hasiniavo. {t.rights}
           </p>
 
-          <p>Conçu & développé avec Next.js.</p>
+          <p>{t.builtWith}</p>
         </div>
       </Container>
     </footer>

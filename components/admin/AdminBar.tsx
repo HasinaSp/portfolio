@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { logout } from "@/app/admin/actions";
+import { logout } from "@/app/(private)/admin/actions";
 
 export default function AdminBar({ email }: { email?: string | null }) {
   return (

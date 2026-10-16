@@ -1,19 +1,25 @@
 import Link from "next/link";
 
 import type { Service } from "@/data/services";
+import { localePath, type Locale } from "@/lib/i18n";
+import { uiText } from "@/lib/ui-text";
 
 interface ServiceCardProps {
   service: Service;
+  lang: Locale;
 }
 
 export default function ServiceCard({
   service,
+  lang,
 }: ServiceCardProps) {
+  const t = uiText[lang].service;
+
   return (
     <article className="group relative flex h-full flex-col border border-[#1f1f1f] bg-[#050505] p-8 transition-all duration-500 hover:border-[#333333] sm:p-10">
       {service.popular && (
         <span className="absolute right-6 top-6 rounded-full border border-[#d00018]/40 bg-[#190003] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.15em] text-[#d00018]">
-          Populaire
+          {t.popular}
         </span>
       )}
 
@@ -23,7 +29,7 @@ export default function ServiceCard({
         </span>
 
         <span className="text-xs text-neutral-600">
-          Service
+          {t.service}
         </span>
       </div>
 
@@ -39,7 +45,7 @@ export default function ServiceCard({
 
       <div className="mt-8 border-t border-[#1f1f1f] pt-8">
         <p className="text-xs uppercase tracking-[0.15em] text-neutral-600">
-          Inclus
+          {t.included}
         </p>
 
         <ul className="mt-5 space-y-3">
@@ -59,7 +65,7 @@ export default function ServiceCard({
         <div className="flex items-end justify-between gap-6 border-t border-[#1f1f1f] pt-6">
           <div>
             <p className="text-[10px] uppercase tracking-[0.15em] text-neutral-600">
-              Tarif
+              {t.price}
             </p>
 
             <p className="mt-2 text-lg font-medium">
@@ -68,10 +74,10 @@ export default function ServiceCard({
           </div>
 
           <Link
-            href={`/services/${service.slug}`}
+            href={localePath(lang, `/services/${service.slug}`)}
             className="group/link inline-flex items-center gap-2 text-sm font-medium text-white transition-colors duration-300 hover:text-[#d00018]"
           >
-            <span>Découvrir</span>
+            <span>{t.discover}</span>
 
             <span className="transition-transform duration-300 group-hover/link:translate-x-1">
               →

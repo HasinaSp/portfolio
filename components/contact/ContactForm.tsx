@@ -2,10 +2,90 @@
 
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { services } from "@/data/services";
-import { HONEYPOT_FIELD, budgetOptions } from "@/lib/contact-options";
+import { getServices } from "@/data/services";
+import { HONEYPOT_FIELD, getBudgetOptions } from "@/lib/contact-options";
+import type { Locale, Localized } from "@/lib/i18n";
 
-export default function ContactForm() {
+const content: Localized<{
+  honeypotLabel: string;
+  nameLabel: string;
+  namePlaceholder: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  companyLabel: string;
+  companyPlaceholder: string;
+  optional: string;
+  serviceLabel: string;
+  servicePlaceholder: string;
+  budgetLabel: string;
+  budgetPlaceholder: string;
+  messageLabel: string;
+  messageHint: string;
+  messagePlaceholder: string;
+  submitting: string;
+  submit: string;
+  privacy: string;
+  fallbackError: string;
+  fallbackSuccess: string;
+  networkError: string;
+}> = {
+  fr: {
+    honeypotLabel: "Ne pas remplir ce champ",
+    nameLabel: "Nom",
+    namePlaceholder: "Votre nom",
+    emailLabel: "E-mail",
+    emailPlaceholder: "vous@exemple.com",
+    companyLabel: "Entreprise / activité",
+    companyPlaceholder: "Nom de votre entreprise",
+    optional: "(facultatif)",
+    serviceLabel: "Service souhaité",
+    servicePlaceholder: "Sélectionner un service",
+    budgetLabel: "Budget estimé",
+    budgetPlaceholder: "Sélectionner une fourchette",
+    messageLabel: "Votre projet",
+    messageHint: "Soyez aussi précis que possible",
+    messagePlaceholder: "Décrivez votre projet, vos objectifs et vos besoins...",
+    submitting: "Envoi en cours...",
+    submit: "Envoyer ma demande",
+    privacy:
+      "Les informations transmises seront utilisées pour traiter votre demande et vous recontacter au sujet de votre projet.",
+    fallbackError: "Veuillez vérifier les informations saisies.",
+    fallbackSuccess: "Votre demande a bien été envoyée.",
+    networkError:
+      "Impossible d'envoyer votre demande. Réessayez dans quelques instants.",
+  },
+  en: {
+    honeypotLabel: "Do not fill in this field",
+    nameLabel: "Name",
+    namePlaceholder: "Your name",
+    emailLabel: "Email",
+    emailPlaceholder: "you@example.com",
+    companyLabel: "Company / business",
+    companyPlaceholder: "Your company name",
+    optional: "(optional)",
+    serviceLabel: "Service needed",
+    servicePlaceholder: "Select a service",
+    budgetLabel: "Estimated budget",
+    budgetPlaceholder: "Select a range",
+    messageLabel: "Your project",
+    messageHint: "Be as specific as possible",
+    messagePlaceholder: "Describe your project, your goals and your needs...",
+    submitting: "Sending...",
+    submit: "Send my request",
+    privacy:
+      "The information you provide will be used to handle your request and to get back to you about your project.",
+    fallbackError: "Please check the information you entered.",
+    fallbackSuccess: "Your request has been sent.",
+    networkError:
+      "Your request could not be sent. Please try again in a moment.",
+  },
+};
+
+export default function ContactForm({ lang }: { lang: Locale }) {
+  const t = content[lang];
+  const services = getServices(lang);
+  const budgetOptions = getBudgetOptions(lang);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [status, setStatus] = useState<{
     type: "success" | "error";
@@ -29,6 +109,7 @@ export default function ContactForm() {
       budget: formData.get("budget"),
       message: formData.get("message"),
       [HONEYPOT_FIELD]: formData.get(HONEYPOT_FIELD),
+      lang,
     };
 
     try {
@@ -56,7 +137,7 @@ export default function ContactForm() {
           message:
             firstError ||
             result.message ||
-            "Veuillez vérifier les informations saisies.",
+            t.fallbackError,
         });
 
         return;
@@ -64,15 +145,14 @@ export default function ContactForm() {
 
       setStatus({
         type: "success",
-        message: result.message || "Votre demande a bien été envoyée.",
+        message: result.message || t.fallbackSuccess,
       });
 
       form.reset();
     } catch {
       setStatus({
         type: "error",
-        message:
-          "Impossible d'envoyer votre demande. Réessayez dans quelques instants.",
+        message: t.networkError,
       });
     } finally {
       setIsSubmitting(false);
@@ -92,7 +172,7 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} className="space-y-8">
       {/* Piège à robots : invisible et hors de la navigation clavier. */}
       <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
-        <label htmlFor={HONEYPOT_FIELD}>Ne pas remplir ce champ</label>
+        <label htmlFor={HONEYPOT_FIELD}>{t.honeypotLabel}</label>
         <input
           id={HONEYPOT_FIELD}
           name={HONEYPOT_FIELD}
@@ -107,7 +187,7 @@ export default function ContactForm() {
       <div className="grid gap-7 sm:grid-cols-2">
         <div>
           <label htmlFor="name" className={labelClass}>
-            Nom <span className="text-[#d00018]">*</span>
+            {t.nameLabel} <span className="text-[#d00018]">*</span>
           </label>
 
           <input
@@ -117,14 +197,14 @@ export default function ContactForm() {
             autoComplete="name"
             required
             maxLength={100}
-            placeholder="Votre nom"
+            placeholder={t.namePlaceholder}
             className={fieldClass}
           />
         </div>
 
         <div>
           <label htmlFor="email" className={labelClass}>
-            E-mail <span className="text-[#d00018]">*</span>
+            {t.emailLabel} <span className="text-[#d00018]">*</span>
           </label>
 
           <input
@@ -134,7 +214,7 @@ export default function ContactForm() {
             autoComplete="email"
             required
             maxLength={254}
-            placeholder="vous@exemple.com"
+            placeholder={t.emailPlaceholder}
             className={fieldClass}
           />
         </div>
@@ -143,9 +223,9 @@ export default function ContactForm() {
       {/* Entreprise */}
       <div>
         <label htmlFor="company" className={labelClass}>
-          Entreprise / activité
+          {t.companyLabel}
           <span className="ml-2 normal-case tracking-normal text-neutral-700">
-            (facultatif)
+            {t.optional}
           </span>
         </label>
 
@@ -155,7 +235,7 @@ export default function ContactForm() {
           type="text"
           autoComplete="organization"
           maxLength={150}
-          placeholder="Nom de votre entreprise"
+          placeholder={t.companyPlaceholder}
           className={fieldClass}
         />
       </div>
@@ -163,7 +243,7 @@ export default function ContactForm() {
       {/* Service */}
       <div>
         <label htmlFor="service" className={labelClass}>
-          Service souhaité <span className="text-[#d00018]">*</span>
+          {t.serviceLabel} <span className="text-[#d00018]">*</span>
         </label>
 
         <select
@@ -174,7 +254,7 @@ export default function ContactForm() {
           className={selectClass}
         >
           <option value="" disabled>
-            Sélectionner un service
+            {t.servicePlaceholder}
           </option>
 
           {services.map((service) => (
@@ -188,9 +268,9 @@ export default function ContactForm() {
       {/* Budget */}
       <div>
         <label htmlFor="budget" className={labelClass}>
-          Budget estimé
+          {t.budgetLabel}
           <span className="ml-2 normal-case tracking-normal text-neutral-700">
-            (facultatif)
+            {t.optional}
           </span>
         </label>
 
@@ -201,7 +281,7 @@ export default function ContactForm() {
           className={selectClass}
         >
           <option value="" disabled>
-            Sélectionner une fourchette
+            {t.budgetPlaceholder}
           </option>
 
           {budgetOptions.map((option) => (
@@ -216,11 +296,11 @@ export default function ContactForm() {
       <div>
         <div className="flex items-center justify-between gap-4">
           <label htmlFor="message" className={labelClass}>
-            Votre projet <span className="text-[#d00018]">*</span>
+            {t.messageLabel} <span className="text-[#d00018]">*</span>
           </label>
 
           <span className="text-[11px] text-neutral-700">
-            Soyez aussi précis que possible
+            {t.messageHint}
           </span>
         </div>
 
@@ -231,7 +311,7 @@ export default function ContactForm() {
           minLength={20}
           maxLength={5000}
           rows={6}
-          placeholder="Décrivez votre projet, vos objectifs et vos besoins..."
+          placeholder={t.messagePlaceholder}
           className="mt-4 w-full resize-y rounded-none border border-[#292929] bg-transparent p-4 text-sm leading-7 text-white outline-none transition-colors placeholder:text-neutral-700 focus:border-[#d00018] sm:p-5"
         />
       </div>
@@ -265,11 +345,11 @@ export default function ContactForm() {
                   d="M4 12a8 8 0 0 1 8-8V0C5.37 0 0 5.37 0 12h4Z"
                 />
               </svg>
-              Envoi en cours...
+              {t.submitting}
             </>
           ) : (
             <>
-              Envoyer ma demande
+              {t.submit}
               <span
                 aria-hidden="true"
                 className="transition-transform duration-300 group-hover:translate-x-1"
@@ -299,8 +379,7 @@ export default function ContactForm() {
         )}
 
         <p className="max-w-lg text-xs leading-6 text-neutral-600">
-          Les informations transmises seront utilisées pour traiter votre
-          demande et vous recontacter au sujet de votre projet.
+          {t.privacy}
         </p>
       </div>
     </form>

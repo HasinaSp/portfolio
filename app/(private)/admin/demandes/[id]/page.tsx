@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { updateRequestStatus } from "@/app/admin/actions";
+import { updateRequestStatus } from "@/app/(private)/admin/actions";
 import DeleteRequestButton from "@/components/admin/DeleteRequestButton";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { requireAdmin } from "@/lib/admin";

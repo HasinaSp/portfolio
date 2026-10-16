@@ -1,11 +1,36 @@
 import { ImageResponse } from "next/og";
 
+import { hasLocale, locales, type Localized } from "@/lib/i18n";
+
+// Une image par langue, générée au build.
+export function generateStaticParams() {
+  return locales.map((lang) => ({ lang }));
+}
+
 // Image de partage par défaut (réseaux sociaux, messageries), générée au build.
-export const alt = "Andriamahandry Hasiniavo — Développeur & Créateur digital";
+export const alt = "Andriamahandry Hasiniavo — Web Developer & Digital Creator";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OpengraphImage() {
+const text: Localized<{ title: string; subtitle: string }> = {
+  fr: {
+    title: "Je conçois des expériences digitales utiles et durables.",
+    subtitle: "Développement web · Création digitale · Produits SaaS",
+  },
+  en: {
+    title: "I design digital experiences that are useful and built to last.",
+    subtitle: "Web development · Digital creation · SaaS products",
+  },
+};
+
+export default async function OpengraphImage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const t = text[hasLocale(lang) ? lang : "fr"];
+
   return new ImageResponse(
     (
       <div
@@ -37,14 +62,12 @@ export default function OpengraphImage() {
               lineHeight: 1.02,
               letterSpacing: -3,
               fontWeight: 600,
-              maxWidth: 980,
+              maxWidth: 1000,
             }}
           >
-            Je conçois des expériences digitales utiles et durables.
+            {t.title}
           </div>
-          <div style={{ marginTop: 32, fontSize: 28, color: "#a3a3a3" }}>
-            Développement web · Création digitale · Produits SaaS
-          </div>
+          <div style={{ marginTop: 32, fontSize: 28, color: "#a3a3a3" }}>{t.subtitle}</div>
         </div>
       </div>
     ),

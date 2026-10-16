@@ -5,24 +5,28 @@ import { useMemo, useState, type ReactNode } from "react";
 import Container from "@/components/ui/Container";
 import Section from "@/components/ui/Section";
 import ProjectCard from "@/components/projects/ProjectCard";
+import type { Locale } from "@/lib/i18n";
+import { uiText } from "@/lib/ui-text";
 import type { Project, ProjectType } from "@/types/project";
 
 type ProjectFilter = "all" | ProjectType;
-
-const filters: { label: string; value: ProjectFilter }[] = [
-  { label: "Tous les projets", value: "all" },
-  { label: "Projets personnels", value: "personal" },
-  { label: "Contributions", value: "contribution" },
-];
 
 // Filtre et grille des projets : seule partie interactive de /projects.
 export default function ProjectsExplorer({
   projects,
   intro,
+  lang,
 }: {
   projects: Project[];
   intro: ReactNode;
+  lang: Locale;
 }) {
+  const t = uiText[lang].project;
+  const filters: { label: string; value: ProjectFilter }[] = [
+    { label: t.filters.all, value: "all" },
+    { label: t.filters.personal, value: "personal" },
+    { label: t.filters.contribution, value: "contribution" },
+  ];
   const [activeFilter, setActiveFilter] = useState<ProjectFilter>("all");
 
   const filteredProjects = useMemo(
@@ -64,8 +68,7 @@ export default function ProjectsExplorer({
               aria-live="polite"
               className="ml-auto self-center text-sm text-neutral-600"
             >
-              {filteredProjects.length} projet
-              {filteredProjects.length > 1 ? "s" : ""}
+              {t.count(filteredProjects.length)}
             </span>
           </div>
         </Container>
@@ -76,12 +79,12 @@ export default function ProjectsExplorer({
           {filteredProjects.length > 0 ? (
             <div className="grid gap-x-8 gap-y-16 md:grid-cols-2 lg:gap-x-10 lg:gap-y-20">
               {filteredProjects.map((project) => (
-                <ProjectCard key={project.slug} project={project} />
+                <ProjectCard key={project.slug} project={project} lang={lang} />
               ))}
             </div>
           ) : (
             <p className="py-20 text-center text-neutral-400">
-              Aucun projet dans cette catégorie.
+              {t.empty}
             </p>
           )}
         </Container>
