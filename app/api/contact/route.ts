@@ -111,8 +111,8 @@ export async function POST(request: Request) {
       select: { id: true },
     });
 
-    // Email à l'admin après la réponse : le visiteur n'attend pas l'envoi.
-    after(() => notifyNewContactRequest(created.id, data));
+    // Emails (admin + accusé au visiteur) après la réponse : le visiteur n'attend pas l'envoi.
+    after(() => notifyNewContactRequest(created.id, data, lang));
 
     return reply(201, { success: true, message: t.success });
   } catch (error) {

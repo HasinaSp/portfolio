@@ -9,9 +9,13 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 | `ADMIN_EMAIL` | Email du compte admin |
 | `ADMIN_PASSWORD_HASH` | Hash bcrypt du mot de passe admin. **Dans `.env`, échapper chaque `$` en `\$`** (Next.js remplace sinon `$2b`, `$10`… par des variables vides). Sur Vercel, coller la valeur telle quelle. |
 | `NEXT_PUBLIC_SITE_URL` | URL publique du site (sitemap, Open Graph, liens des emails) |
-| `RESEND_API_KEY` | Facultatif : email à chaque nouvelle demande de contact (plan gratuit Resend) |
-| `CONTACT_NOTIFY_TO` | Facultatif : destinataire de ces emails (par défaut `ADMIN_EMAIL`) |
-| `CONTACT_NOTIFY_FROM` | Facultatif : expéditeur, sur un domaine vérifié chez Resend (par défaut l'adresse de test Resend) |
+| `SMTP_USER` | Facultatif : adresse Gmail qui envoie les emails. Sans `SMTP_USER` / `SMTP_PASSWORD`, aucun email n'est envoyé |
+| `SMTP_PASSWORD` | Mot de passe d'application Google (16 caractères, sans espaces) : https://myaccount.google.com/apppasswords, validation en deux étapes requise |
+| `SMTP_HOST` / `SMTP_PORT` | Facultatifs : `smtp.gmail.com` / `465` par défaut |
+| `MAIL_FROM` | Facultatif : expéditeur affiché, avec la même adresse que `SMTP_USER` (par défaut `Hasina Andriamahandry <SMTP_USER>`) |
+| `CONTACT_NOTIFY_TO` | Facultatif : boîte qui reçoit les nouvelles demandes et les réponses des visiteurs (par défaut `ADMIN_EMAIL`) |
+
+À chaque demande de collaboration, deux emails partent : le détail de la demande vers `CONTACT_NOTIFY_TO`, et un accusé de réception au visiteur dans sa langue (au plus 2 par jour et par adresse, sans reprendre son message). Les envois sont plafonnés à 400 par jour (limite Gmail gratuite : ~500).
 
 Contenu modifiable sans toucher aux pages : `data/projects.ts` (projets et études de cas), `data/testimonials.ts` (témoignages), `data/availability.ts` (textes du badge de disponibilité ; l'état disponible / planning complet se change depuis `/admin`).
 
