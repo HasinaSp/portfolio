@@ -17,6 +17,8 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 let transporter: Transporter | undefined;
 
 export type Mail = {
+  // Nom court de l'email dans les logs (jamais l'adresse ni le contenu).
+  kind: string;
   to: string;
   subject: string;
   html: string;
@@ -29,14 +31,12 @@ export async function sendMail(mail: Mail): Promise<boolean> {
   const pass = process.env.SMTP_PASSWORD;
 
   if (!user || !pass) {
-    if (process.env.NODE_ENV === "development") {
-      console.info(`[email non envoyé, SMTP non configuré] ${mail.subject} → ${mail.to}`);
-    }
+    console.warn(`Email « ${mail.kind} » non envoyé : SMTP_USER / SMTP_PASSWORD non définis.`);
     return false;
   }
 
   if (!(await rateLimit("mail:daily", DAILY_LIMIT, DAY_MS))) {
-    console.error("Email non envoyé : quota journalier atteint.");
+    console.error(`Email « ${mail.kind} » non envoyé : quota journalier atteint.`);
     return false;
   }
 
@@ -52,7 +52,7 @@ export async function sendMail(mail: Mail): Promise<boolean> {
   });
 
   try {
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       // Gmail impose l'adresse du compte comme expéditeur.
       from: process.env.MAIL_FROM || `Hasina Andriamahandry <${user}>`,
       to: mail.to,
@@ -62,10 +62,21 @@ export async function sendMail(mail: Mail): Promise<boolean> {
       html: mail.html,
       text: mail.text,
     });
+
+    // Gmail peut accepter la connexion mais refuser le destinataire.
+    if (info.rejected?.length) {
+      console.error(`Email « ${mail.kind} » refusé par le serveur SMTP :`, info.response);
+      return false;
+    }
+
+    console.info(`Email « ${mail.kind} » envoyé.`);
     return true;
   } catch (error) {
     // Pas de données personnelles dans les logs.
-    console.error("Email non envoyé :", error instanceof Error ? error.message : error);
+    console.error(
+      `Email « ${mail.kind} » non envoyé :`,
+      error instanceof Error ? error.message : error,
+    );
     return false;
   }
 }
