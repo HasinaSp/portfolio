@@ -57,7 +57,30 @@ function refererLocale(request: Request): Locale {
   }
 }
 
+// Anti-CSRF : seuls les envois JSON du site lui-même sont acceptés. Un
+// formulaire d'un autre site ne peut poster que du texte ou du form-urlencoded,
+// et un fetch JSON depuis une autre origine est bloqué par le navigateur.
+// Sans en-tête Origin (outil hors navigateur), la limite par IP s'applique.
+function isSameOriginJson(request: Request) {
+  const contentType = request.headers.get("content-type") ?? "";
+  if (!contentType.toLowerCase().startsWith("application/json")) return false;
+
+  const origin = request.headers.get("origin");
+  if (!origin) return true;
+
+  const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host");
+  try {
+    return new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+}
+
 export async function POST(request: Request) {
+  if (!isSameOriginJson(request)) {
+    return reply(403, { success: false, message: messages[refererLocale(request)].invalidRequest });
+  }
+
   const raw = await request.text().catch(() => "");
 
   if (raw.length > MAX_BODY_BYTES) {
