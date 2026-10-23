@@ -15,7 +15,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 | `MAIL_FROM` | Facultatif : expéditeur affiché, avec la même adresse que `SMTP_USER` (par défaut `Hasina Andriamahandry <SMTP_USER>`) |
 | `CONTACT_NOTIFY_TO` | Facultatif : boîte qui reçoit les nouvelles demandes et les réponses des visiteurs (par défaut `ADMIN_EMAIL`) |
 
-À chaque demande de collaboration, deux emails partent : le détail de la demande vers `CONTACT_NOTIFY_TO`, et un accusé de réception au visiteur dans sa langue (au plus 2 par jour et par adresse, sans reprendre son message). Les envois sont plafonnés à 400 par jour (limite Gmail gratuite : ~500).
+À chaque demande de collaboration, deux emails partent : le détail de la demande vers `CONTACT_NOTIFY_TO`, et un accusé de réception au visiteur dans sa langue (au plus 2 par jour et par adresse, sans reprendre son message ; volontairement sobre, sans lien ni bouton, pour limiter le classement en spam). Chaque envoi laisse une ligne dans les logs Vercel : `Email « … » envoyé.`, ou la raison de l'échec. Les envois sont plafonnés à 400 par jour (limite Gmail gratuite : ~500).
 
 Contenu modifiable sans toucher aux pages : `data/projects.ts` (projets et études de cas), `data/testimonials.ts` (témoignages), `data/availability.ts` (textes du badge de disponibilité ; l'état disponible / planning complet se change depuis `/admin`).
 
