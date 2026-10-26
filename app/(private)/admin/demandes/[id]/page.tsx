@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { updateRequestStatus } from "@/app/(private)/admin/actions";
 import DeleteRequestButton from "@/components/admin/DeleteRequestButton";
+import PaymentStatusBadge from "@/components/admin/PaymentStatusBadge";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { requireAdmin } from "@/lib/admin";
 import {
@@ -13,6 +14,7 @@ import {
   statusMeta,
 } from "@/lib/contact-requests";
 import { prisma } from "@/lib/db";
+import { formatMoney } from "@/lib/payments";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -22,7 +24,10 @@ export default async function ContactRequestPage({ params }: PageProps) {
   await requireAdmin();
 
   const { id } = await params;
-  const request = await prisma.contactRequest.findUnique({ where: { id } });
+  const request = await prisma.contactRequest.findUnique({
+    where: { id },
+    include: { payments: { orderBy: { createdAt: "desc" } } },
+  });
 
   if (!request) notFound();
 
@@ -138,6 +143,41 @@ export default async function ContactRequestPage({ params }: PageProps) {
                 </div>
               ))}
             </dl>
+          </section>
+
+          <section
+            aria-labelledby="paiements"
+            className="rounded-2xl border border-[#1f1f1f] bg-[#050505] p-6"
+          >
+            <h2
+              id="paiements"
+              className="text-xs font-medium uppercase tracking-[0.2em] text-neutral-500"
+            >
+              Paiements
+            </h2>
+            {request.payments.length > 0 && (
+              <ul className="mt-4 divide-y divide-[#1f1f1f] text-sm">
+                {request.payments.map((payment) => (
+                  <li key={payment.id}>
+                    <Link
+                      href={`/admin/paiements/${payment.id}`}
+                      className="flex items-center justify-between gap-4 py-3 text-neutral-200 hover:text-white"
+                    >
+                      <span className="tabular-nums">
+                        {formatMoney(payment.amount, payment.currency)}
+                      </span>
+                      <PaymentStatusBadge status={payment.status} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <Link
+              href={`/admin/paiements/nouveau?demande=${request.id}`}
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#2a2a2a] px-4 py-2 text-xs font-medium text-neutral-300 transition-colors hover:border-[#d00018] hover:text-white"
+            >
+              Créer un paiement <span aria-hidden="true">→</span>
+            </Link>
           </section>
 
           <div className="flex justify-end">
