@@ -4,6 +4,7 @@ import { budgetLabel, serviceLabel } from "@/lib/contact-requests";
 import type { Locale, Localized } from "@/lib/i18n";
 import { sendMail } from "@/lib/mailer";
 import { rateLimit } from "@/lib/rate-limit";
+import { getSiteUrl } from "@/lib/site-url";
 import type { ContactInput } from "@/lib/validations";
 
 /*
@@ -26,10 +27,6 @@ function escapeHtml(value: string) {
     .replace(/'/g, "&#39;");
 }
 
-function siteUrl() {
-  return (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/+$/, "");
-}
-
 export async function notifyNewContactRequest(id: string, data: ContactInput, lang: Locale) {
   await Promise.all([notifyAdmin(id, data), confirmToVisitor(data, lang)]);
 }
@@ -48,7 +45,7 @@ async function notifyAdmin(id: string, data: ContactInput) {
     ["Service", serviceLabel(data.service)],
     ["Budget", budgetLabel(data.budget ?? null)],
   ];
-  const adminUrl = `${siteUrl()}/admin/demandes/${id}`;
+  const adminUrl = `${getSiteUrl()}/admin/demandes/${id}`;
 
   const html = `
     <div style="font-family:Arial,sans-serif;max-width:600px;color:#111">

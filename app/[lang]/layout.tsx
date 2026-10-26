@@ -10,11 +10,12 @@ import Footer from "@/components/layout/Footer";
 import MotionProvider from "@/components/motion/MotionProvider";
 import { geistMono, geistSans } from "@/lib/fonts";
 import { hasLocale, languageAlternates, locales, ogLocale } from "@/lib/i18n";
+import { getSiteUrl } from "@/lib/site-url";
 import { uiText } from "@/lib/ui-text";
 
 import "../globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = getSiteUrl();
 
 type LayoutParams = { params: Promise<{ lang: string }> };
 
