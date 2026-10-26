@@ -3,8 +3,9 @@ import type { MetadataRoute } from "next";
 import { projects } from "@/data/projects";
 import { services } from "@/data/services";
 import { localePath, locales } from "@/lib/i18n";
+import { getSiteUrl } from "@/lib/site-url";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = getSiteUrl();
 
 type Entry = MetadataRoute.Sitemap[number];
 

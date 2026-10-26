@@ -21,8 +21,9 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 import SplitWords from "@/components/motion/SplitWords";
 import AvailabilityBadge from "@/components/ui/AvailabilityBadge";
 import Testimonials from "@/components/testimonials/Testimonials";
+import { getSiteUrl } from "@/lib/site-url";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = getSiteUrl();
 
 const content: Localized<{
   eyebrow: string;

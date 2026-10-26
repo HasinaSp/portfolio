@@ -8,7 +8,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 | `AUTH_SECRET` | Secret NextAuth (`npx auth secret`) |
 | `ADMIN_EMAIL` | Email du compte admin |
 | `ADMIN_PASSWORD_HASH` | Hash bcrypt du mot de passe admin. **Dans `.env`, échapper chaque `$` en `\$`** (Next.js remplace sinon `$2b`, `$10`… par des variables vides). Sur Vercel, coller la valeur telle quelle. |
-| `NEXT_PUBLIC_SITE_URL` | URL publique du site (sitemap, Open Graph, liens des emails) |
+| `NEXT_PUBLIC_SITE_URL` | URL publique du site (sitemap, Open Graph, liens des emails et de paiement). Facultative sur Vercel : à défaut, le domaine de production (ou l'URL de la preview) est utilisé ; `http://localhost:3000` en local |
 | `SMTP_USER` | Facultatif : adresse Gmail qui envoie les emails. Sans `SMTP_USER` / `SMTP_PASSWORD`, aucun email n'est envoyé |
 | `SMTP_PASSWORD` | Mot de passe d'application Google (16 caractères, sans espaces) : https://myaccount.google.com/apppasswords, validation en deux étapes requise |
 | `SMTP_HOST` / `SMTP_PORT` | Facultatifs : `smtp.gmail.com` / `465` par défaut |

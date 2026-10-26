@@ -3,6 +3,7 @@ import { randomBytes } from "node:crypto";
 import type { PaymentStatus } from "@prisma/client";
 
 import { intlLocale, localePath, type Locale } from "@/lib/i18n";
+import { getSiteUrl } from "@/lib/site-url";
 
 // Statuts d'un paiement, libellés de l'admin (même style que les demandes).
 export const paymentStatusMeta: Record<PaymentStatus, { label: string; className: string }> = {
@@ -46,11 +47,7 @@ export function parseAmountToCents(value: string): number | null {
   return Math.round(Number(normalized) * 100);
 }
 
-export function siteUrl() {
-  return (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/+$/, "");
-}
-
 // Lien public envoyé au client, dans sa langue.
 export function paymentUrl(token: string, lang: Locale) {
-  return `${siteUrl()}${localePath(lang, `/pay/${token}`)}`;
+  return `${getSiteUrl()}${localePath(lang, `/pay/${token}`)}`;
 }

@@ -1,7 +1,8 @@
 import type { Payment } from "@prisma/client";
 
 import { sendMail } from "@/lib/mailer";
-import { formatMoney, siteUrl } from "@/lib/payments";
+import { formatMoney } from "@/lib/payments";
+import { getSiteUrl } from "@/lib/site-url";
 
 /*
  * Email à l'admin quand un paiement est confirmé par Lemon Squeezy. Le client,
@@ -25,7 +26,7 @@ export async function notifyPaymentReceived(payment: Payment) {
   }
 
   const amount = formatMoney(payment.amount, payment.currency);
-  const adminUrl = `${siteUrl()}/admin/paiements/${payment.id}`;
+  const adminUrl = `${getSiteUrl()}/admin/paiements/${payment.id}`;
   const rows: [string, string][] = [
     ["Client", payment.clientName],
     ["E-mail", payment.clientEmail],
