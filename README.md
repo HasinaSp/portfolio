@@ -17,6 +17,22 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 À chaque demande de collaboration, deux emails partent : le détail de la demande vers `CONTACT_NOTIFY_TO`, et un accusé de réception au visiteur dans sa langue (au plus 2 par jour et par adresse, sans reprendre son message ; volontairement sobre, sans lien ni bouton, pour limiter le classement en spam). Chaque envoi laisse une ligne dans les logs Vercel : `Email « … » envoyé.`, ou la raison de l'échec. Les envois sont plafonnés à 400 par jour (limite Gmail gratuite : ~500).
 
+### Paiements (Lemon Squeezy)
+
+| Variable | Rôle |
+| --- | --- |
+| `LEMONSQUEEZY_API_KEY` | Clé API (Settings → API). Une clé créée en mode test ne crée que des paiements de test |
+| `LEMONSQUEEZY_STORE_ID` | Identifiant numérique de la boutique (Settings → Stores) |
+| `LEMONSQUEEZY_VARIANT_ID` | Variante du produit « Paiement de prestation » ; son prix est remplacé par le montant de chaque devis |
+| `LEMONSQUEEZY_WEBHOOK_SECRET` | Secret de signature du webhook |
+
+Mise en place dans Lemon Squeezy :
+
+1. Créer un produit « Paiement de prestation » (paiement unique, prix quelconque) et relever l'identifiant de sa variante.
+2. Settings → Webhooks : URL `https://<site>/api/webhooks/lemonsqueezy`, événements `order_created` et `order_refunded`, et un secret de signature (le même que `LEMONSQUEEZY_WEBHOOK_SECRET`).
+
+Parcours : dans `/admin/paiements` (ou depuis une demande), créer un paiement (client, prestation, montant) et envoyer le lien `/pay/<jeton>` au client. Il paie sur la page Lemon Squeezy et revient sur ce lien, qui affiche le reçu. Le statut n'est changé que par le webhook signé (montant, devise, boutique et produit vérifiés), et un email « Paiement reçu » est envoyé à `CONTACT_NOTIFY_TO`. Les montants sont dans la devise de la boutique.
+
 Contenu modifiable sans toucher aux pages : `data/projects.ts` (projets et études de cas), `data/testimonials.ts` (témoignages), `data/availability.ts` (textes du badge de disponibilité ; l'état disponible / planning complet se change depuis `/admin`).
 
 Migrations : `npx prisma migrate deploy`.

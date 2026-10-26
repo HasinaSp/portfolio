@@ -25,12 +25,55 @@ model ContactRequest {
 
   status    ContactStatus @default(NEW)
 
+  payments  Payment[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Liste de l'admin : filtre par statut, plus récentes d'abord.
   @@index([status, createdAt])
   @@index([createdAt])
+}
+
+// Paiement d'un devis, créé depuis l'admin et réglé via Lemon Squeezy.
+// Le statut n'est modifié que par le webhook signé de Lemon Squeezy.
+model Payment {
+  id          String        @id @default(cuid())
+  // Jeton aléatoire du lien public envoyé au client (/pay/<token>).
+  token       String        @unique
+
+  clientName  String
+  clientEmail String
+  description String
+  amount      Int           // en centimes, dans la devise de la boutique
+  currency    String
+  lang        String        @default("fr")
+
+  status      PaymentStatus @default(PENDING)
+
+  contactRequestId String?
+  contactRequest   ContactRequest? @relation(fields: [contactRequestId], references: [id], onDelete: SetNull)
+
+  // Commande Lemon Squeezy, renseignée par le webhook.
+  orderId     String?       @unique
+  orderNumber Int?
+  receiptUrl  String?
+  testMode    Boolean       @default(false)
+  paidAt      DateTime?
+
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, createdAt])
+  @@index([contactRequestId])
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  PARTIAL_REFUND
 }
 
 // Limitation de débit partagée entre les instances serverless

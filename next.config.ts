@@ -17,7 +17,9 @@ const contentSecurityPolicy = [
   `frame-src ${isPreview ? "https://vercel.live" : "'none'"}`,
   "object-src 'none'",
   "base-uri 'self'",
-  "form-action 'self'",
+  // Lemon Squeezy : redirection vers la page de paiement après « Payer »
+  // (envoi de formulaire classique quand JavaScript est indisponible).
+  "form-action 'self' https://*.lemonsqueezy.com",
   "frame-ancestors 'none'",
   "upgrade-insecure-requests",
 ].join("; ");

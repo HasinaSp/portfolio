@@ -15,6 +15,20 @@ export default function AdminBar({ email }: { email?: string | null }) {
         {email && (
           <p className="mt-1 text-xs text-neutral-500">Connecté : {email}</p>
         )}
+        <nav aria-label="Administration" className="mt-4 flex gap-2">
+          <Link
+            href="/admin"
+            className="rounded-full border border-[#2a2a2a] px-4 py-2 text-xs text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white"
+          >
+            Demandes
+          </Link>
+          <Link
+            href="/admin/paiements"
+            className="rounded-full border border-[#2a2a2a] px-4 py-2 text-xs text-neutral-300 transition-colors hover:border-neutral-500 hover:text-white"
+          >
+            Paiements
+          </Link>
+        </nav>
       </div>
 
       <form action={logout}>
