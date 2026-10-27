@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import Container from "@/components/ui/Container";
 import ProjectCard from "@/components/projects/ProjectCard";
 import { getProjects } from "@/data/projects";
+import { getServices } from "@/data/services";
 import { contact } from "@/lib/contact";
 import {
   hasLocale,
@@ -43,12 +44,7 @@ const content: Localized<{
     link: string;
   };
   projects: { eyebrow: string; title: string; text: string; link: string };
-  services: {
-    eyebrow: string;
-    title: string;
-    link: string;
-    items: { number: string; title: string; description: string }[];
-  };
+  services: { eyebrow: string; title: string; link: string };
   contact: { eyebrow: string; title: string; text: string; primary: string; secondary: string };
   jobTitle: string;
   knowsAbout: string;
@@ -89,26 +85,6 @@ const content: Localized<{
       eyebrow: "Expertise",
       title: "Comment je peux vous aider.",
       link: "Découvrir les services ↗",
-      items: [
-        {
-          number: "01",
-          title: "Web design",
-          description:
-            "Des interfaces soignées, lisibles et pensées pour offrir une expérience utilisateur cohérente.",
-        },
-        {
-          number: "02",
-          title: "Développement web",
-          description:
-            "Des sites et applications web performants, conçus avec des technologies modernes.",
-        },
-        {
-          number: "03",
-          title: "Solutions digitales",
-          description:
-            "Des outils adaptés à des besoins concrets pour transformer une idée en solution utile.",
-        },
-      ],
     },
     contact: {
       eyebrow: "Une idée à concrétiser ?",
@@ -156,24 +132,6 @@ const content: Localized<{
       eyebrow: "Expertise",
       title: "How I can help you.",
       link: "Explore my services ↗",
-      items: [
-        {
-          number: "01",
-          title: "Web design",
-          description:
-            "Polished, readable interfaces designed to deliver a consistent user experience.",
-        },
-        {
-          number: "02",
-          title: "Web development",
-          description: "Fast, reliable websites and web apps built with modern technologies.",
-        },
-        {
-          number: "03",
-          title: "Digital solutions",
-          description: "Tools tailored to concrete needs, turning an idea into something useful.",
-        },
-      ],
     },
     contact: {
       eyebrow: "An idea to bring to life?",
@@ -203,6 +161,8 @@ export default async function HomePage({ params }: PageProps) {
   const href = (path: string) => localePath(lang, path);
   const projects = getProjects(lang);
   const featuredProjects = projects.filter((project) => project.featured);
+  // Mêmes services que la page /services (data/services.ts).
+  const services = getServices(lang);
   // Bandeau défilant : technologies de tous les projets, sans doublon.
   const technologies = [...new Set(projects.flatMap((project) => project.technologies))];
 
@@ -299,7 +259,7 @@ export default async function HomePage({ params }: PageProps) {
               </div>
 
               <p
-                className="enter-up hidden text-right text-xs leading-6 text-neutral-600 lg:block"
+                className="enter-up hidden text-right text-xs leading-6 text-neutral-500 lg:block"
                 style={{ "--delay": "1.1s" } as React.CSSProperties}
               >
                 {t.tagline[0]}<br />
@@ -310,13 +270,10 @@ export default async function HomePage({ params }: PageProps) {
         </Container>
       </section>
 
-      {/* TECHNOLOGIES */}
-      <section
-        aria-label={uiText[lang].technologies}
-        className="border-b border-[#1f1f1f] py-7 text-sm uppercase tracking-[0.2em] text-neutral-500 sm:py-9 sm:text-base"
-      >
+      {/* TECHNOLOGIES (la région nommée est portée par Marquee) */}
+      <div className="border-b border-[#1f1f1f] py-7 text-sm uppercase tracking-[0.2em] text-neutral-500 sm:py-9 sm:text-base">
         <Marquee label={uiText[lang].technologies} items={technologies} />
-      </section>
+      </div>
 
       {/* APPROCHE */}
       <section className="border-b border-[#1f1f1f]">
@@ -354,7 +311,8 @@ export default async function HomePage({ params }: PageProps) {
                   src="/about/profile.jpeg"
                   alt={t.about.portraitAlt}
                   fill
-                  sizes="(max-width: 1024px) 100vw, 400px"
+                  // Cadre limité à max-w-sm (384 px), moins les marges sur petit écran.
+                  sizes="(max-width: 432px) calc(100vw - 48px), 384px"
                   className="object-cover"
                 />
               </ParallaxMedia>
@@ -456,32 +414,30 @@ export default async function HomePage({ params }: PageProps) {
             </div>
 
             <RevealGroup className="mt-12 divide-y divide-[#1f1f1f] border-y border-[#1f1f1f]">
-              {t.services.items.map((service) => (
-                <RevealItem key={service.number}>
-                <Link
-                  href={href("/services")}
-                  className="group grid gap-4 py-7 transition-colors sm:grid-cols-[64px_1fr_auto] sm:items-center sm:gap-8"
-                >
-                  <span className="text-xs text-neutral-600">
-                    {service.number}
-                  </span>
-
-                  <div>
-                    <h3 className="text-xl font-medium transition-colors group-hover:text-[#d00018] sm:text-2xl">
-                      {service.title}
-                    </h3>
-                    <p className="mt-2 max-w-2xl text-sm leading-7 text-neutral-500">
-                      {service.description}
-                    </p>
-                  </div>
-
-                  <span
-                    aria-hidden="true"
-                    className="text-xl text-neutral-600 transition-all group-hover:translate-x-1 group-hover:text-[#d00018]"
+              {services.map((service) => (
+                <RevealItem key={service.slug}>
+                  <Link
+                    href={href(`/services/${service.slug}`)}
+                    className="group grid gap-4 py-7 transition-colors sm:grid-cols-[64px_1fr_auto] sm:items-center sm:gap-8"
                   >
-                    ↗
-                  </span>
-                </Link>
+                    <span className="text-xs text-neutral-500">{service.number}</span>
+
+                    <div>
+                      <h3 className="text-xl font-medium transition-colors group-hover:text-[#d00018] sm:text-2xl">
+                        {service.title}
+                      </h3>
+                      <p className="mt-2 max-w-2xl text-sm leading-7 text-neutral-500">
+                        {service.shortDescription}
+                      </p>
+                    </div>
+
+                    <span
+                      aria-hidden="true"
+                      className="text-xl text-neutral-600 transition-all group-hover:translate-x-1 group-hover:text-[#d00018]"
+                    >
+                      ↗
+                    </span>
+                  </Link>
                 </RevealItem>
               ))}
             </RevealGroup>
