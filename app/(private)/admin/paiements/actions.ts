@@ -7,7 +7,11 @@ import { z } from "zod";
 import { requireAdmin } from "@/lib/admin";
 import { prisma } from "@/lib/db";
 import { getStoreCurrency, lemonSqueezyConfigured } from "@/lib/lemonsqueezy";
+import { sendPaymentLink } from "@/lib/notify-payment";
 import { newPaymentToken, parseAmountToCents } from "@/lib/payments";
+import { rateLimit } from "@/lib/rate-limit";
+
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 export type PaymentFormState = {
   error?: string;
@@ -38,6 +42,8 @@ const paymentSchema = z.object({
     ),
   lang: z.enum(["fr", "en"]),
   contactRequestId: z.preprocess((value) => (value ? value : undefined), z.string().optional()),
+  // Case cochée : "on" ; décochée : champ absent.
+  sendEmail: z.preprocess((value) => value === "on", z.boolean()),
 });
 
 export async function createPayment(
@@ -91,11 +97,31 @@ export async function createPayment(
       lang: data.lang,
       contactRequestId,
     },
-    select: { id: true },
   });
 
+  // Un email qui échoue n'annule pas le paiement : le lien reste copiable.
+  const email = data.sendEmail ? ((await sendPaymentLink(payment)) ? "&email=ok" : "&email=echec") : "";
+
   revalidatePath("/admin/paiements");
-  redirect(`/admin/paiements/${payment.id}?cree=1`);
+  redirect(`/admin/paiements/${payment.id}?cree=1${email}`);
+}
+
+// « Envoyer par email » depuis la fiche : seulement tant que rien n'est payé,
+// et au plus 5 envois par jour pour un même paiement.
+export async function resendPaymentLink(formData: FormData) {
+  await requireAdmin();
+
+  const id = String(formData.get("id") ?? "");
+  const payment = await prisma.payment.findUnique({ where: { id } });
+  if (!payment || (payment.status !== "PENDING" && payment.status !== "FAILED")) {
+    redirect(`/admin/paiements/${id}`);
+  }
+
+  const sent =
+    (await rateLimit(`mail:payment-link:${payment.id}`, 5, DAY_MS)) &&
+    (await sendPaymentLink(payment));
+
+  redirect(`/admin/paiements/${payment.id}?email=${sent ? "ok" : "echec"}`);
 }
 
 // Seul un paiement jamais réglé peut être supprimé (lien envoyé par erreur…).

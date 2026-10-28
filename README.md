@@ -8,7 +8,7 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 | `AUTH_SECRET` | Secret NextAuth (`npx auth secret`) |
 | `ADMIN_EMAIL` | Email du compte admin |
 | `ADMIN_PASSWORD_HASH` | Hash bcrypt du mot de passe admin. **Dans `.env`, échapper chaque `$` en `\$`** (Next.js remplace sinon `$2b`, `$10`… par des variables vides). Sur Vercel, coller la valeur telle quelle. |
-| `NEXT_PUBLIC_SITE_URL` | URL publique du site (sitemap, Open Graph, liens des emails et de paiement). Facultative sur Vercel : à défaut, le domaine de production (ou l'URL de la preview) est utilisé ; `http://localhost:3000` en local |
+| `NEXT_PUBLIC_SITE_URL` | URL publique du site (sitemap, Open Graph, liens des emails et de paiement). Facultative sur Vercel : à défaut, le domaine de production (ou l'URL de la preview) est utilisé ; `http://localhost:3000` en local. Sur Vercel, une valeur `localhost` ou invalide est ignorée (avertissement dans les logs). Variable figée au build : redéployer après l'avoir modifiée |
 | `SMTP_USER` | Facultatif : adresse Gmail qui envoie les emails. Sans `SMTP_USER` / `SMTP_PASSWORD`, aucun email n'est envoyé |
 | `SMTP_PASSWORD` | Mot de passe d'application Google (16 caractères, sans espaces) : https://myaccount.google.com/apppasswords, validation en deux étapes requise |
 | `SMTP_HOST` / `SMTP_PORT` | Facultatifs : `smtp.gmail.com` / `465` par défaut |
@@ -31,7 +31,7 @@ Mise en place dans Lemon Squeezy :
 1. Créer un produit « Paiement de prestation » (paiement unique, prix quelconque) et relever l'identifiant de sa variante.
 2. Settings → Webhooks : URL `https://<site>/api/webhooks/lemonsqueezy`, événements `order_created` et `order_refunded`, et un secret de signature (le même que `LEMONSQUEEZY_WEBHOOK_SECRET`).
 
-Parcours : dans `/admin/paiements` (ou depuis une demande), créer un paiement (client, prestation, montant) et envoyer le lien `/pay/<jeton>` au client. Il paie sur la page Lemon Squeezy et revient sur ce lien, qui affiche le reçu. Le statut n'est changé que par le webhook signé (montant, devise, boutique et produit vérifiés), et un email « Paiement reçu » est envoyé à `CONTACT_NOTIFY_TO`. Les montants sont dans la devise de la boutique.
+Parcours : dans `/admin/paiements` (ou depuis une demande), créer un paiement (client, prestation, montant) : le lien `/pay/<jeton>` est envoyé au client par email dans sa langue (case cochée par défaut ; bouton « Envoyer par email » sur la fiche pour le renvoyer, 5 fois par jour au plus), et reste copiable pour un envoi manuel. Il paie sur la page Lemon Squeezy et revient sur ce lien, qui affiche le reçu. Le statut n'est changé que par le webhook signé (montant, devise, boutique et produit vérifiés), et un email « Paiement reçu » est envoyé à `CONTACT_NOTIFY_TO`. Les montants sont dans la devise de la boutique.
 
 Contenu modifiable sans toucher aux pages : `data/projects.ts` (projets et études de cas), `data/testimonials.ts` (témoignages), `data/availability.ts` (textes du badge de disponibilité ; l'état disponible / planning complet se change depuis `/admin`).
 
