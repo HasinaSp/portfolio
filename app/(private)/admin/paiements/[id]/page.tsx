@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import CopyLinkButton from "@/components/admin/CopyLinkButton";
 import DeletePaymentButton from "@/components/admin/DeletePaymentButton";
 import PaymentStatusBadge from "@/components/admin/PaymentStatusBadge";
+import SendPaymentLinkButton from "@/components/admin/SendPaymentLinkButton";
 import { requireAdmin } from "@/lib/admin";
 import { formatRequestDate } from "@/lib/contact-requests";
 import { prisma } from "@/lib/db";
@@ -12,14 +13,14 @@ import { formatMoney, paymentUrl } from "@/lib/payments";
 
 type PageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ cree?: string }>;
+  searchParams: Promise<{ cree?: string; email?: string }>;
 };
 
 export default async function PaymentPage({ params, searchParams }: PageProps) {
   await requireAdmin();
 
   const { id } = await params;
-  const { cree } = await searchParams;
+  const { cree, email } = await searchParams;
   const payment = await prisma.payment.findUnique({
     where: { id },
     include: { contactRequest: { select: { id: true, name: true } } },
@@ -28,7 +29,8 @@ export default async function PaymentPage({ params, searchParams }: PageProps) {
   if (!payment) notFound();
 
   const url = paymentUrl(payment.token, hasLocale(payment.lang) ? payment.lang : "fr");
-  const canDelete = (payment.status === "PENDING" || payment.status === "FAILED") && !payment.orderId;
+  const unpaid = payment.status === "PENDING" || payment.status === "FAILED";
+  const canDelete = unpaid && !payment.orderId;
 
   const details: [string, string][] = [
     ["Montant", formatMoney(payment.amount, payment.currency)],
@@ -60,13 +62,31 @@ export default async function PaymentPage({ params, searchParams }: PageProps) {
         <PaymentStatusBadge status={payment.status} />
       </div>
 
-      {cree && (
+      {email === "ok" ? (
         <p
           role="status"
           className="mt-6 border border-emerald-900/60 bg-emerald-950/20 p-3 text-sm text-emerald-400"
         >
-          Paiement créé. Copiez le lien ci-dessous et envoyez-le à {payment.clientName}.
+          {cree ? "Paiement créé. " : ""}Lien de paiement envoyé par email à {payment.clientEmail}.
         </p>
+      ) : email === "echec" ? (
+        <p
+          role="alert"
+          className="mt-6 border border-red-900/60 bg-red-950/20 p-3 text-sm text-red-300"
+        >
+          {cree ? "Paiement créé, mais l'" : "L'"}email n&apos;a pas pu être envoyé (SMTP non
+          configuré, quota atteint ou 5 envois déjà faits aujourd&apos;hui : voir les logs Vercel).
+          Copiez le lien ci-dessous et envoyez-le à {payment.clientName}.
+        </p>
+      ) : (
+        cree && (
+          <p
+            role="status"
+            className="mt-6 border border-emerald-900/60 bg-emerald-950/20 p-3 text-sm text-emerald-400"
+          >
+            Paiement créé. Copiez le lien ci-dessous et envoyez-le à {payment.clientName}.
+          </p>
+        )
       )}
 
       <div className="mt-10 grid items-start gap-6 lg:grid-cols-[1.4fr_1fr]">
@@ -82,6 +102,7 @@ export default async function PaymentPage({ params, searchParams }: PageProps) {
               {url}
             </code>
             <CopyLinkButton url={url} />
+            {unpaid && <SendPaymentLinkButton id={payment.id} label="Envoyer par email" />}
           </div>
           <p className="mt-4 text-sm leading-6 text-neutral-500">
             Le client voit le montant et la prestation, puis paie sur la page sécurisée de Lemon

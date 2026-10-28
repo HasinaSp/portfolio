@@ -106,6 +106,16 @@ export default function PaymentForm({ defaults }: { defaults: Defaults }) {
         </div>
       </div>
 
+      <label className="flex items-center gap-3 text-sm text-neutral-300">
+        <input
+          type="checkbox"
+          name="sendEmail"
+          defaultChecked
+          className="h-4 w-4 accent-[#d00018]"
+        />
+        Envoyer le lien de paiement au client par email
+      </label>
+
       {state.error && (
         <p
           role="alert"
